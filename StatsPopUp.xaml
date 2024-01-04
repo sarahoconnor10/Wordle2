@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mct:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+             x:Class="Wordle.StatsPopUp">
+
+    <VerticalStackLayout Margin="10" WidthRequest="300" HeightRequest="250" VerticalOptions="Center" HorizontalOptions="Center">
+        <Label 
+            Text="STATISTICS"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"
+            TextColor="Black"
+            FontSize="Small"
+            FontFamily="DroidSerifRegular"
+            Margin="0, 30, 0, 0"
+            FontAttributes="Bold"
+            />
+        <HorizontalStackLayout HorizontalOptions="Center">
+            <Label
+                Text="1"
+                FontSize="Header"
+                FontFamily="DroidSerifRegular"
+                TextColor="Black" 
+                Margin="10, 10, 10, 0"
+                />
+            <Label
+                Text="100"
+                FontSize="Header"
+                FontFamily="DroidSerifRegular"
+                TextColor="Black" 
+                Margin="10, 10, 10, 0"
+                />
+            <Label
+                Text="1"
+                FontSize="Header"
+                FontFamily="DroidSerifRegular"
+                TextColor="Black" 
+                Margin="10, 10, 10, 0"
+                />
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout HorizontalOptions="Center">
+            <Label
+                Text="Played"
+                FontSize="Micro"
+                FontFamily="DroidSerifRegular"
+                TextColor="Black" 
+                Margin="10, 0, 10, 20"
+ 
+                />
+            <Label
+                Text="Win %"
+                FontSize="Micro"
+                FontFamily="DroidSerifRegular"
+                TextColor="Black" 
+                Margin="10, 0, 10, 20"
+                />
+            <Label
+                Text="Streak"
+                FontSize="Micro"
+                FontFamily="DroidSerifRegular"
+                TextColor="Black" 
+                Margin="10, 0, 10, 20"
+                />
+
+        </HorizontalStackLayout>
+        <Button 
+            x:Name="playAgain_btn"
+            HorizontalOptions="Center"
+            Text="Play Again"
+            BackgroundColor="{DynamicResource WordleGreen}"
+            TextColor="Black"
+            CornerRadius="15"
+            Margin="0, 10, 0, 0"
+            />
+    </VerticalStackLayout>
+</mct:Popup>
+    
+    

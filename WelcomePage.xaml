@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Wordle.WelcomePage"
+             BackgroundColor="{DynamicResource BackgroundColor}" >
+    
+    <ScrollView>
+        <VerticalStackLayout VerticalOptions="Center">
+
+            <Image Source="w_image.png" HeightRequest="50" WidthRequest="50"
+                   HorizontalOptions="Center"/>
+            <Label x:Name="GameTitle" Text="Wordle"  FontSize="Large" 
+                   HorizontalOptions="Center" Margin="20" FontAttributes="Bold"
+                   FontFamily="DroidSerifRegular" TextColor="{DynamicResource WordleGreen}"/>
+            <Label x:Name="GameTagline" Text="The 5-Letter Word Guessing Game."
+                   FontFamily="DroidSerifRegular" HorizontalOptions="Center"
+                   FontSize="Medium" TextColor="{DynamicResource TextColor}"/>
+            <HorizontalStackLayout HorizontalOptions="Center" Margin="0,30,0,0">
+                <Button Text="Settings" Margin="10,0,10,0" WidthRequest="100" BackgroundColor="Grey" CornerRadius="15" TextColor="{DynamicResource TextColor}" Clicked="SettingsButton_Clicked"/>
+                <Button Text="Play" Margin="10,0,10,0" WidthRequest="100" BackgroundColor="{DynamicResource WordleGreen}" CornerRadius="15" TextColor="{DynamicResource TextColor}" Clicked="PlayButton_Clicked"/>
+                <Button Text="Statistics" Margin="10,0,10,0" WidthRequest="100" BackgroundColor="Grey" CornerRadius="15" TextColor="{DynamicResource TextColor}" Clicked="StatsButton_Clicked"/>
+
+            </HorizontalStackLayout>
+
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
