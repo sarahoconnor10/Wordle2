@@ -9,14 +9,16 @@ namespace Wordle.ViewModels
         private string FilePath => System.IO.Path.Combine(FileSystem.Current.AppDataDirectory, "words.txt");
 
         private HttpClient httpClient;
-        private List<string> words;
+        private List<string> ListofWords;
+        public List<string> Words => ListofWords;
         private bool isBusy;
 
         public WordsViewModel()
         {
             httpClient = new HttpClient();
-            words = new List<string>();
-            //GetWordsCommand = new Command(async () => await MakeCollection());
+            ListofWords = new List<string>();
+
+           
 
             if(File.Exists(FilePath))
             {
@@ -24,11 +26,11 @@ namespace Wordle.ViewModels
             }
         }//constructor
 
-        private async void ReadFromFile()
+        private async Task ReadFromFile()
         {
             try
             {
-                words = File.ReadAllLines(FilePath).ToList();
+                ListofWords = File.ReadAllLines(FilePath).ToList();
             }//try
             catch(Exception ex)
             {
@@ -38,18 +40,18 @@ namespace Wordle.ViewModels
 
         private async Task GetWords()
         {
-            words.Clear();
+            ListofWords.Clear();
             var response = await httpClient.GetAsync("https://raw.githubusercontent.com/DonH-ITS/jsonfiles/main/words.txt");
             string content = await response.Content.ReadAsStringAsync();
             string[] individualWords = content.Split(new[] { '\n' });
-            words.AddRange(individualWords);
+            ListofWords.AddRange(individualWords);
 
             //write to file
             SaveWordsFile(content);
 
         }//GetWords()
 
-        private async void SaveWordsFile(string data)
+        private async Task SaveWordsFile(string data)
         {
             try
             {
@@ -68,17 +70,27 @@ namespace Wordle.ViewModels
                 return;
             try
             {
+                IsBusy = true;
 
-            }
+                if (File.Exists(FilePath))
+                     ReadFromFile(); 
+                else
+                    await GetWords();
+            }//try
             catch(Exception ex)
             {
-
-            }
+                await Shell.Current.DisplayAlert("Error making list", ex.Message, "OK");
+            }//catch
             finally
             {
                 IsBusy = false;
-            }
-        }
+            }//finally
+        }//MakeList()
+
+        public async Task GetWordsFromVM()
+        {
+            await MakeList();
+        }//GetWordsFromVM
 
         public bool IsBusy
         {
@@ -91,13 +103,13 @@ namespace Wordle.ViewModels
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsNotBusy));
             }
-        }
+        }//IsBusy
 
         public bool IsNotBusy => !IsBusy;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
-}
+        }//OnPropertyChanged()
+    }//class
+}//namespace

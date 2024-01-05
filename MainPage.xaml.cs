@@ -1,6 +1,9 @@
 ﻿
 using CommunityToolkit.Maui.Views;
 using System.Diagnostics;
+using Wordle.ViewModels;
+using System;
+using System.IO;
 
 namespace Wordle;
 
@@ -19,9 +22,14 @@ namespace Wordle;
 public partial class MainPage : ContentPage
 {
     private AppSettings _settingsViewModel;
+    private WordsViewModel _wordsViewModel;
+    SettingsPopUp settingsPage = new SettingsPopUp();
+    StatsPopUp statsPage = new StatsPopUp();
+
 
 
     private List<Label> addedLabels = new List<Label>();
+    private List<Frame> addedFrames = new List<Frame>();
     private List<string> guesses = new List<string>();
     private List<string> words = new List<string>();
     private List<char> correctLettersGuessed = new List<char>();
@@ -29,42 +37,54 @@ public partial class MainPage : ContentPage
     
     private Random random = new Random();
     private HttpClient httpClient = new HttpClient();
-    
+
+    public string SaveFilePath => System.IO.Path.Combine(FileSystem.Current.AppDataDirectory, "savefile.txt");
     private string guess;
     private int letterCounter = 0, guessCounter = 0;
     private int numWins, gamesPlayed, percentWon, streak;
     public bool gameRunning = false;
     bool isHardMode;
     bool validInput;
+    bool gridDrawn = false;
     
-
-
     private string chosenWord { get; set; }
+
     public MainPage()
     {
         InitializeComponent();
 
         _settingsViewModel = new AppSettings();
+        _wordsViewModel = new WordsViewModel();
         BindingContext = _settingsViewModel;
-
-        DrawGrid();
-
-        GetWords();
-
-        gameRunning = true;
-
         isHardMode = _settingsViewModel.IsHardMode;
+        _wordsViewModel.GetWordsFromVM();
 
-
+        PlayGame();
     }//MainPage constructor
+
+    public async void PlayGame()
+    {
+        GetDetails();
+        RestartGame();
+        GetWord();
+        gamesPlayed++;
+    }
+
+    private void playAgain_btn_Clicked(object sender, EventArgs e)
+    {
+        PlayGame();
+    }//playagain
 
     private void DrawGrid()
     {
-        for (int i = 0; i < 6; i++)
-            GuessGrid.AddRowDefinition(new RowDefinition());
+        if (!gridDrawn)
+        {
+            for (int i = 0; i < 6; i++)
+                GuessGrid.AddRowDefinition(new RowDefinition());
 
-        for (int i = 0; i < 5; i++)
-            GuessGrid.AddColumnDefinition(new ColumnDefinition());
+            for (int i = 0; i < 5; i++)
+                GuessGrid.AddColumnDefinition(new ColumnDefinition());
+        }
 
         for (int row = 0; row < 5; row++)
         {
@@ -79,19 +99,16 @@ public partial class MainPage : ContentPage
                     BorderColor = (Color)Application.Current.Resources["TextColor"]
                 };
                 GuessGrid.Add(styledFrame, row, col);
+
+                addedFrames.Add(styledFrame);
             }//inner loop - col
         }//outer loop - row
+        gridDrawn = true;
     }//drawGrid()
 
-    private async void PlayGame()
+    private async void GetWord()
     {
-
-    }
-    private async void GetWords()
-    {
-        var response = await httpClient.GetStringAsync("https://raw.githubusercontent.com/DonH-ITS/jsonfiles/main/words.txt");
-        string[] individualWords = response.Split(new[] { '\n' });
-        words.AddRange(individualWords);
+        words = _wordsViewModel.Words;
         chosenWord = PickWord();
         Debug.WriteLine(chosenWord);
     }//getWords
@@ -191,7 +208,6 @@ public partial class MainPage : ContentPage
                         else
                         {
                             guess += label.Text;
-
                         }
                     }
                 }
@@ -203,7 +219,6 @@ public partial class MainPage : ContentPage
                 }
                 else
                 {
-
                     if (isRowFull)
                     {
                         guesses.Add(guess);
@@ -295,15 +310,15 @@ public partial class MainPage : ContentPage
             }
                 
         }//for 
-                if(greenLetters.Count == 5) 
-                {
-                    Win();
-                }
-                chosenLetters.Clear();
-                greenLetters.Clear();
-                yellowLetters.Clear();
-                if (guessCounter == 6)
-                   Lose();
+        if(greenLetters.Count == 5) 
+        {
+            Win();
+        }
+        chosenLetters.Clear();
+        greenLetters.Clear();
+        yellowLetters.Clear();
+        if (guessCounter == 6)
+           Lose();
     }//check word
 
     private void ValidWord()
@@ -318,66 +333,129 @@ public partial class MainPage : ContentPage
             else
                 validInput = false;
         }
-    }
+    }//ValidWord()
 
     private async void Win()
     {
-        /*
-        int row = guessCounter-1;
-        int column = 0;
-
-        Frame currentFrame = null;
-        for (column = 0; column < 5; column++)
-        {
-            foreach (var child in GuessGrid.Children)
-            {
-                if (child is Frame && GuessGrid.GetRow(child) == row && GuessGrid.GetColumn(child) == column)
-                {
-                    currentFrame = (Frame)child;
-                    await currentFrame.ScaleTo(1.5, 300);
-                    // await Task.Delay(100);
-
-                    break;
-                }
-            }//for each
-        }*/ //ANIMATIONS ??? problems - letters weren't moving, only frame, each frame moving too many times etc etc
-
+        playAgain_btn.IsVisible = true;
         numWins++;
+        streak++;
         await DisplayAlert("Win!", "You Won!", "Ok");
         DisableKeyboard();
         gameRunning = false;
+        SaveDetails();
+        statsPage.UpdateStatistics();
         await this.ShowPopupAsync(new StatsPopUp());
-
-
     }//Win()
     private async void Lose()
     {
+        playAgain_btn.IsVisible = true;
+        streak = 0;
         DisplayAnswer(chosenWord);
         DisableKeyboard();
         gameRunning = false;
+        SaveDetails();
+        statsPage.UpdateStatistics();
         await this.ShowPopupAsync(new StatsPopUp());
 
     }//Lose()
 
-    private void SaveDetails()
+    private async Task SaveDetails()
     {
-        //write details to a file
-            //number of wins
-            //past words -
-                // win or lose
-                // num of guesses taken
-                // correct word
+        percentWon = numWins / gamesPlayed * 100;
+        
+        try
+        {
+            //write details to a file
+            using (StreamWriter sw = new StreamWriter(SaveFilePath))
+            {
+                //number of wins
+                sw.WriteLine(numWins);
+                //win percentage
+                sw.WriteLine(percentWon);
+                //streak
+                sw.WriteLine(streak);
+                //games played
+                sw.WriteLine(gamesPlayed);
+            }//streamWriter
+        }//try
+        catch(Exception ex) 
+        {
+            await Shell.Current.DisplayAlert("Error saving details", ex.Message, "OK");
+        }//catch
     }//SaveDetails
+
+    public async Task GetDetails()
+    {
+        if (File.Exists(SaveFilePath))
+        {
+            try
+            {
+                //read in variables from save file
+                using (StreamReader sr = new StreamReader(SaveFilePath))
+                {
+                    //number of wins
+                    numWins = int.Parse(sr.ReadLine());
+                    //win percentage
+                    percentWon = int.Parse(sr.ReadLine());
+                    //streak
+                    streak = int.Parse(sr.ReadLine());
+                    //games played
+                    gamesPlayed = int.Parse(sr.ReadLine());
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error reading details from file", ex.Message, "OK");
+            }
+        }
+        else
+        {
+            numWins = 0;
+            percentWon = 0;
+            streak = 0;
+            gamesPlayed = 0;
+        }//else no file
+    }//
     
     public void RestartGame()
     {
         //clear grid
+        ClearGrid();
+
         //redraw grid
-        //reset variables
+        DrawGrid();
+
         //enable keyboard
         EnableKeyboard();
         gameRunning = true;
+
+        playAgain_btn.IsVisible = false;
+
     }//RestartGame
+    private void ClearGrid()
+    {
+        foreach (var label in addedLabels)
+        {
+            GuessGrid.Children.Remove(label);
+        }//remove labels
+
+        foreach (var frame in addedFrames)
+        {
+            GuessGrid.Children.Remove(frame);
+        }//removes frames
+
+        //reset variables / clear lists
+        addedLabels.Clear();
+        addedFrames.Clear();
+        guesses.Clear();
+        correctLettersGuessed.Clear();
+        wrongLettersGuessed.Clear();
+        guess = "";
+        letterCounter = 0;
+        guessCounter = 0;
+    }//ClearGrid();
+
 
     private async void DisplayAnswer(string answer)
     {
@@ -387,12 +465,13 @@ public partial class MainPage : ContentPage
     private async void GoToSettings(object sender, EventArgs e)
     {
         if(!gameRunning)
-            await this.ShowPopupAsync(new SettingsPopUp());
+            await this.ShowPopupAsync(settingsPage);
 
     }//GoToSettings
     private async void GoToStats(object sender, EventArgs e)
     {
-       await this.ShowPopupAsync(new StatsPopUp());
+        statsPage.UpdateStatistics();
+        await this.ShowPopupAsync(statsPage);
     }//GoToStats
 
     private void DisableKeyboard()
@@ -796,10 +875,6 @@ public partial class MainPage : ContentPage
             }
         }
     }//turn key grey
-
-
-
-
 
 }//class end
 

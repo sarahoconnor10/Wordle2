@@ -66,6 +66,19 @@
                     <Button x:Name="back_btn"  Text="Backspace" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Backspace_Clicked"/>
                 </HorizontalStackLayout>
             </VerticalStackLayout>
+
+            <Button 
+            x:Name="playAgain_btn"
+            Clicked="playAgain_btn_Clicked"
+            HorizontalOptions="Center"
+            Text="Play Again"
+            BackgroundColor="{DynamicResource WordleGreen}"
+            TextColor="Black"
+            CornerRadius="15"
+            Margin="0, 10, 0, 0"
+            IsVisible = "false"
+            WidthRequest="100"
+            />
         </VerticalStackLayout>
     </ScrollView>
 

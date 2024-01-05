@@ -25,7 +25,6 @@
                 />
             <Switch 
                 x:Name="darkMode_switch" 
-                IsToggled="{Binding IsDarkMode}"
                 HorizontalOptions="End" 
                 OnColor="Grey"
                 ThumbColor="DarkGrey"
@@ -44,7 +43,6 @@
                 />
             <Switch 
                 x:Name="hardMode_switch"  
-                IsToggled="{Binding IsHardMode}" 
                 HorizontalOptions="End" 
                 OnColor="Grey"
                 ThumbColor="DarkGrey"
