@@ -10,7 +10,6 @@ namespace Wordle;
  *  add in references
  *  add github link (explain issues with previous repositories?)
  *  dynamic sizing depending on device
- *  changing keyboard colours
  *  saving info to file
  *  updating stats info
  *  ISSUE - 
