@@ -83,7 +83,10 @@ public partial class MainPage : ContentPage
         }//outer loop - row
     }//drawGrid()
 
+    private async void PlayGame()
+    {
 
+    }
     private async void GetWords()
     {
         var response = await httpClient.GetStringAsync("https://raw.githubusercontent.com/DonH-ITS/jsonfiles/main/words.txt");
