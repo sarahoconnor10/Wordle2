@@ -11,22 +11,25 @@ namespace Wordle;
  *  add github link (explain issues with previous repositories?)
  *  dynamic sizing depending on device
  *  changing keyboard colours
+ *  saving info to file
+ *  updating stats info
  */
 
 public partial class MainPage : ContentPage
 {
     private List<Label> addedLabels = new List<Label>();
-    
     private List<string> guesses = new List<string>();
-    private Random random = new Random();
     private List<string> words = new List<string>();
-    private HttpClient httpClient = new HttpClient();
-    private int letterCounter = 0, guessCounter = 0;
-    private string guess;
-    private int numWins;
-    public bool gameRunning = false;
     private List<char> correctLettersGuessed = new List<char>();
     private List<char> wrongLettersGuessed = new List<char>();
+    
+    private Random random = new Random();
+    private HttpClient httpClient = new HttpClient();
+    
+    private string guess;
+    private int letterCounter = 0, guessCounter = 0;
+    private int numWins, gamesPlayed, percentWon, streak;
+    public bool gameRunning = false;
 
 
 
