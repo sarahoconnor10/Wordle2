@@ -1,27 +1,25 @@
-using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Maui.Views;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace Wordle;
 
 public partial class SettingsPopUp : Popup
 {
+    private AppSettings _viewModel = new AppSettings();
 	public SettingsPopUp()
 	{
 		InitializeComponent();
+        BindingContext = _viewModel;
 	}
 
     private void hardMode_switch_Toggled(object sender, ToggledEventArgs e)
     {
-
+        _viewModel.IsHardMode = e.Value;
     }
 
     private void darkMode_switch_Toggled(object sender, ToggledEventArgs e)
     {
+        _viewModel.IsDarkMode = e.Value;
         ToggleTheme(e.Value);
-
     }
     private void ToggleTheme(bool isDarkMode)
     {
@@ -39,4 +37,5 @@ public partial class SettingsPopUp : Popup
         }
     }
 
+    
 }

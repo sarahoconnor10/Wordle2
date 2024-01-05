@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <mct:Popup  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
-             x:Class="Wordle.SettingsPopUp">
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+             
+            x:Class="Wordle.SettingsPopUp">
     <VerticalStackLayout Margin="10" WidthRequest="300" HeightRequest="250" VerticalOptions="Center" HorizontalOptions="Center">
         <Label 
             Text="SETTINGS"
@@ -23,7 +24,8 @@
                 Margin="10, 10, 10, 0"
                 />
             <Switch 
-                x:Name="darkMode_switch"  
+                x:Name="darkMode_switch" 
+                IsToggled="{Binding IsDarkMode}"
                 HorizontalOptions="End" 
                 OnColor="Grey"
                 ThumbColor="DarkGrey"
@@ -42,12 +44,13 @@
                 />
             <Switch 
                 x:Name="hardMode_switch"  
-                IsToggled="false" 
+                IsToggled="{Binding IsHardMode}" 
                 HorizontalOptions="End" 
                 OnColor="Grey"
                 ThumbColor="DarkGrey"
                 Margin="20,3,10,0"
                 Toggled="hardMode_switch_Toggled"
+                
                 />
 
         </HorizontalStackLayout>

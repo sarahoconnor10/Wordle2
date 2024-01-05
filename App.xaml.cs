@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-
+﻿
 namespace Wordle;
 
 public partial class App : Application
@@ -9,6 +8,7 @@ public partial class App : Application
 		InitializeComponent();
 		
 		MainPage = new AppShell();
+
 	}//constructor
 
 }//class

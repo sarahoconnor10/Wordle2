@@ -1,5 +1,5 @@
-﻿using CommunityToolkit.Maui.Views;
-using System.Data.Common;
+﻿
+using CommunityToolkit.Maui.Views;
 using System.Diagnostics;
 
 namespace Wordle;
@@ -13,10 +13,15 @@ namespace Wordle;
  *  changing keyboard colours
  *  saving info to file
  *  updating stats info
+ *  ISSUE - 
+ *  on welcome page -> clicking "settings" multiple times causing app to freeze
  */
 
 public partial class MainPage : ContentPage
 {
+    private AppSettings _settingsViewModel;
+
+
     private List<Label> addedLabels = new List<Label>();
     private List<string> guesses = new List<string>();
     private List<string> words = new List<string>();
@@ -30,19 +35,27 @@ public partial class MainPage : ContentPage
     private int letterCounter = 0, guessCounter = 0;
     private int numWins, gamesPlayed, percentWon, streak;
     public bool gameRunning = false;
-
+    bool isHardMode;
+    bool validInput;
+    
 
 
     private string chosenWord { get; set; }
     public MainPage()
     {
         InitializeComponent();
-       
+
+        _settingsViewModel = new AppSettings();
+        BindingContext = _settingsViewModel;
+
         DrawGrid();
 
         GetWords();
 
         gameRunning = true;
+
+        isHardMode = _settingsViewModel.IsHardMode;
+
 
     }//MainPage constructor
 
@@ -157,39 +170,48 @@ public partial class MainPage : ContentPage
 
     private void Enter_Clicked(object sender, EventArgs e)
     {
-        if (guessCounter < 6)
-        {
-            guess = "";
-
-            int rowIndex = guessCounter;
-            bool isRowFull = true;
-
-            foreach (var child in GuessGrid.Children)
+            if (guessCounter < 6)
             {
-                if (GuessGrid.GetRow(child) == rowIndex && child is Label label)
-                {
-                    if (string.IsNullOrEmpty(label.Text))
-                    {
-                        isRowFull = false;
-                        break;
-                    }
-                    else
-                    {
-                        guess += label.Text;
+                guess = "";
 
+                int rowIndex = guessCounter;
+                bool isRowFull = true;
+
+                foreach (var child in GuessGrid.Children)
+                {
+                    if (GuessGrid.GetRow(child) == rowIndex && child is Label label)
+                    {
+                        if (string.IsNullOrEmpty(label.Text))
+                        {
+                            isRowFull = false;
+                            break;
+                        }
+                        else
+                        {
+                            guess += label.Text;
+
+                        }
+                    }
+                }
+                guess = guess.ToLower();
+                ValidWord();
+                if(!validInput)
+                {
+                    DisplayAlert("Invalid Input", "Word not in word list", "Ok");
+                }
+                else
+                {
+
+                    if (isRowFull)
+                    {
+                        guesses.Add(guess);
+                        checkWord();
+                        guessCounter++;
+                        letterCounter = 0;
+                        Debug.WriteLine(guess);
                     }
                 }
             }
-            if (isRowFull)
-            {
-                guess = guess.ToLower();
-                guesses.Add(guess);
-                checkWord();
-                guessCounter++;
-                letterCounter = 0;
-                Debug.WriteLine(guess);
-            }
-        }
     }//enter
 
     private async void checkWord()
@@ -282,6 +304,20 @@ public partial class MainPage : ContentPage
                    Lose();
     }//check word
 
+    private void ValidWord()
+    {
+        for (int i = 0; i < words.Count; i++)
+        {
+            if (guess.Equals(words[i]))
+            {
+                validInput = true;
+                return;
+            }
+            else
+                validInput = false;
+        }
+    }
+
     private async void Win()
     {
         /*
@@ -331,7 +367,7 @@ public partial class MainPage : ContentPage
                 // correct word
     }//SaveDetails
     
-    private void RestartGame()
+    public void RestartGame()
     {
         //clear grid
         //redraw grid
@@ -514,79 +550,79 @@ public partial class MainPage : ContentPage
                 a_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'b':
-                b_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                b_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'c':
-                c_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                c_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'd':
-                d_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                d_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'e':
-                e_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                e_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'f':
-                f_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                f_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'g':
-                g_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                g_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'h':
-                h_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                h_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'i':
-                i_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                i_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'j':
-                j_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                j_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'k':
-                k_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                k_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'l':
-                l_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                l_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'm':
-                m_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                m_key.BackgroundColor = Color.FromHex("#ffc425"); 
                 break;
             case 'n':
-                n_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                n_key.BackgroundColor = Color.FromHex("#ffc425");   
                 break;
             case 'o':
-                o_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                o_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'p':
-                p_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                p_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'q':
-                q_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                q_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'r':
-                r_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                r_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 's':
-                s_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                s_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 't':
-                t_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                t_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'u':
-                u_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                u_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'v':
-                v_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                v_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'w':
-                w_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                w_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'x':
-                x_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                x_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'y':
-                y_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                y_key.BackgroundColor = Color.FromHex("#ffc425");
                 break;
             case 'z':
-                z_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                z_key.BackgroundColor = Color.FromHex("#ffc425"); 
                 break;
         }//switch
     }//turn key yellow
@@ -598,82 +634,168 @@ public partial class MainPage : ContentPage
                 a_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'b':
-                b_key.BackgroundColor = Color.FromHex("#878686"); ;
+                b_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'c':
-                c_key.BackgroundColor = Color.FromHex("#878686"); ;
+                c_key.BackgroundColor = Color.FromHex("#878686");  
                 break;
             case 'd':
-                d_key.BackgroundColor = Color.FromHex("#878686"); ;
+                d_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'e':
-                e_key.BackgroundColor = Color.FromHex("#878686"); ;
+                e_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'f':
-                f_key.BackgroundColor = Color.FromHex("#878686"); ;
+                f_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'g':
-                g_key.BackgroundColor = Color.FromHex("#878686"); ;
+                g_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'h':
-                h_key.BackgroundColor = Color.FromHex("#878686"); ;
+                h_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'i':
-                i_key.BackgroundColor = Color.FromHex("#878686"); ;
+                i_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'j':
-                j_key.BackgroundColor = Color.FromHex("#878686"); ;
+                j_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'k':
-                k_key.BackgroundColor = Color.FromHex("#878686"); ;
+                k_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'l':
-                l_key.BackgroundColor = Color.FromHex("#878686"); ;
+                l_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'm':
-                m_key.BackgroundColor = Color.FromHex("#878686"); ;
+                m_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'n':
-                n_key.BackgroundColor = Color.FromHex("#878686"); ;
+                n_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'o':
-                o_key.BackgroundColor = Color.FromHex("#878686"); ;
+                o_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'p':
-                p_key.BackgroundColor = Color.FromHex("#878686"); ;
+                p_key.BackgroundColor = Color.FromHex("#878686"); 
                 break;
             case 'q':
-                q_key.BackgroundColor = Color.FromHex("#878686"); ;
+                q_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'r':
-                r_key.BackgroundColor = Color.FromHex("#878686"); ;
+                r_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 's':
-                s_key.BackgroundColor = Color.FromHex("#878686"); ;
+                s_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 't':
-                t_key.BackgroundColor = Color.FromHex("#878686"); ;
+                t_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'u':
-                u_key.BackgroundColor = Color.FromHex("#878686"); ;
+                u_key.BackgroundColor = Color.FromHex("#878686");   
                 break;
             case 'v':
-                v_key.BackgroundColor = Color.FromHex("#878686"); ;
+                v_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'w':
-                w_key.BackgroundColor = Color.FromHex("#878686"); ;
+                w_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'x':
-                x_key.BackgroundColor = Color.FromHex("#878686"); ;
+                x_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'y':
-                y_key.BackgroundColor = Color.FromHex("#878686"); ;
+                y_key.BackgroundColor = Color.FromHex("#878686");
                 break;
             case 'z':
-                z_key.BackgroundColor = Color.FromHex("#878686"); ;
+                z_key.BackgroundColor = Color.FromHex("#878686"); 
                 break;
         }//switch
+        if(isHardMode)
+        {
+            switch(key)
+            {
+                case 'a':
+                    a_key.IsEnabled = false;
+                    break;
+                case 'b':
+                    b_key.IsEnabled = false;
+                    break;
+                case 'c':
+                    c_key.IsEnabled = false; 
+                    break;
+                case 'd':
+                    d_key.IsEnabled = false; 
+                    break;
+                case 'e':
+                    e_key.IsEnabled = false; 
+                    break;
+                case 'f':
+                    f_key.IsEnabled = false; 
+                    break;
+                case 'g':
+                    g_key.IsEnabled = false; 
+                    break;
+                case 'h':
+                    h_key.IsEnabled = false; 
+                    break;
+                case 'i':
+                    i_key.IsEnabled = false; 
+                    break;
+                case 'j':
+                    j_key.IsEnabled = false; 
+                    break;
+                case 'k':
+                    k_key.IsEnabled = false; 
+                    break;
+                case 'l':
+                    l_key.IsEnabled = false; 
+                    break;
+                case 'm':
+                    m_key.IsEnabled = false; 
+                    break;
+                case 'n':
+                    n_key.IsEnabled = false; 
+                    break;
+                case 'o':
+                    o_key.IsEnabled = false; 
+                    break;
+                case 'p':
+                    p_key.IsEnabled = false; 
+                    break;
+                case 'q':
+                    q_key.IsEnabled = false; 
+                    break;
+                case 'r':
+                    r_key.IsEnabled = false; 
+                    break;
+                case 's':
+                    s_key.IsEnabled = false; 
+                    break;
+                case 't':
+                    t_key.IsEnabled = false; 
+                    break;
+                case 'u':
+                    u_key.IsEnabled = false; 
+                    break;
+                case 'v':
+                    v_key.IsEnabled = false; 
+                    break;
+                case 'w':
+                    w_key.IsEnabled = false; 
+                    break;
+                case 'x':
+                    x_key.IsEnabled = false; 
+                    break;
+                case 'y':
+                    y_key.IsEnabled = false; 
+                    break;
+                case 'z':
+                    z_key.IsEnabled = false; 
+                    break;
+            }
+        }
     }//turn key grey
+
+
 
 
 

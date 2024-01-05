@@ -4,6 +4,8 @@ namespace Wordle;
 
 public partial class WelcomePage : ContentPage
 {
+    SettingsPopUp settingsPage = new SettingsPopUp();
+    StatsPopUp statsPage = new StatsPopUp();
     public WelcomePage()
     {
         InitializeComponent();
@@ -18,12 +20,13 @@ public partial class WelcomePage : ContentPage
     private async void SettingsButton_Clicked(object sender, EventArgs e)
     {
         //redirect to settings page upon clicking
-        await this.ShowPopupAsync(new SettingsPopUp());
+        await this.ShowPopupAsync(settingsPage);
     }//SettingsButton_Clicked
 
     private async void StatsButton_Clicked(object sender, EventArgs e)
     {
         //redirect to statistics page upon clicking
-        await this.ShowPopupAsync(new StatsPopUp());
+        await this.ShowPopupAsync(statsPage);
+
     }//StatsButton_Clicked
 }//WelcomePage Class
