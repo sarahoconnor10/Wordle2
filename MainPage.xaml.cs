@@ -3,13 +3,14 @@ using System.Data.Common;
 using System.Diagnostics;
 
 namespace Wordle;
-//change keyboard size depending on device :/
+
 /*
- * 03/01/24 current tasks:
- *  stats page 
- *  settings page
+ * 04/01/24 current tasks:
  *  save details to file(settings and stats)
  *  add in references
+ *  add github link (explain issues with previous repositories?)
+ *  dynamic sizing depending on device
+ *  changing keyboard colours
  */
 
 public partial class MainPage : ContentPage
@@ -24,7 +25,10 @@ public partial class MainPage : ContentPage
     private string guess;
     private int numWins;
     public bool gameRunning = false;
-    
+    private List<char> correctLettersGuessed = new List<char>();
+    private List<char> wrongLettersGuessed = new List<char>();
+
+
 
     private string chosenWord { get; set; }
     public MainPage()
@@ -204,6 +208,7 @@ public partial class MainPage : ContentPage
             {
                 //record green indexes
                 greenLetters.Add(col);
+                correctLettersGuessed.Add(guess[col]);
                 chosenLetters.Remove(guess[col]);
             }//if letter == letter
         }//for - find green spaces
@@ -239,17 +244,26 @@ public partial class MainPage : ContentPage
                 {
                     //turn square green
                     currentFrame.BackgroundColor = Color.FromHex("#019a01");
+                    ChangeKeyGreen(guess[column]);
                 }
                 else if (yellowLetters.Contains(column))
                 {
                     //else turn square yellow
                     currentFrame.BackgroundColor = Color.FromHex("#ffc425");
+                    if (!correctLettersGuessed.Contains(guess[column]))
+                    {
+                        ChangeKeyYellow(guess[column]);
+                    }
                 }
                 else
                 {
                     //turn square darker grey
                     currentFrame.BackgroundColor = Color.FromHex("#878686");
-
+                    if (!correctLettersGuessed.Contains(guess[column]))
+                    {
+                        wrongLettersGuessed.Add(guess[column]);
+                        ChangeKeyGrey(guess[column]);
+                    }
                 }
             }
                 
@@ -403,6 +417,262 @@ public partial class MainPage : ContentPage
         z_key.IsEnabled = true;
         back_btn.IsEnabled = true;
     }//EnableKeyboard
+
+    private void ChangeKeyGreen(char key)
+    {
+        switch (key)
+        {
+            case 'a':
+                a_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'b':
+                b_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'c':
+                c_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'd':
+                d_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'e':
+                e_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'f':
+                f_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'g':
+                g_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'h':
+                h_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'i':
+                i_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'j':
+                j_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'k':
+                k_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'l':
+                l_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'm':
+                m_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'n':
+                n_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'o':
+                o_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'p':
+                p_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'q':
+                q_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'r':
+                r_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 's':
+                s_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 't':
+                t_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'u':
+                u_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'v':
+                v_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'w':
+                w_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'x':
+                x_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'y':
+                y_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+            case 'z':
+                z_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break;
+        }//switch
+    }//turn key green
+
+    private void ChangeKeyYellow(char key)
+    {
+        switch (key)
+        {
+            case 'a':
+                a_key.BackgroundColor = Color.FromHex("#ffc425");
+                break;
+            case 'b':
+                b_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'c':
+                c_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'd':
+                d_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'e':
+                e_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'f':
+                f_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'g':
+                g_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'h':
+                h_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'i':
+                i_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'j':
+                j_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'k':
+                k_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'l':
+                l_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'm':
+                m_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'n':
+                n_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'o':
+                o_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'p':
+                p_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'q':
+                q_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'r':
+                r_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 's':
+                s_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 't':
+                t_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'u':
+                u_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'v':
+                v_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'w':
+                w_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'x':
+                x_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'y':
+                y_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+            case 'z':
+                z_key.BackgroundColor = Color.FromHex("#ffc425"); ;
+                break;
+        }//switch
+    }//turn key yellow
+    private void ChangeKeyGrey(char key)
+    {
+        switch (key)
+        {
+            case 'a':
+                a_key.BackgroundColor = Color.FromHex("#878686");
+                break;
+            case 'b':
+                b_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'c':
+                c_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'd':
+                d_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'e':
+                e_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'f':
+                f_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'g':
+                g_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'h':
+                h_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'i':
+                i_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'j':
+                j_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'k':
+                k_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'l':
+                l_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'm':
+                m_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'n':
+                n_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'o':
+                o_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'p':
+                p_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'q':
+                q_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'r':
+                r_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 's':
+                s_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 't':
+                t_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'u':
+                u_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'v':
+                v_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'w':
+                w_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'x':
+                x_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'y':
+                y_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+            case 'z':
+                z_key.BackgroundColor = Color.FromHex("#878686"); ;
+                break;
+        }//switch
+    }//turn key grey
+
+
 
 }//class end
 
