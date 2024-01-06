@@ -97,7 +97,7 @@ public partial class StatsPopUp : Popup, INotifyPropertyChanged
 
                     //win percentage
                     if (GamesPlayed != 0)
-                        PercentWon = (int)(NumWins / GamesPlayed) * 100;
+                        PercentWon = (int)(((double)NumWins / GamesPlayed) * 100);
                     else
                         PercentWon = 0;
                 }

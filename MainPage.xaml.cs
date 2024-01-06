@@ -9,12 +9,9 @@ namespace Wordle;
 
 /*
  * 04/01/24 current tasks:
- *  save details to file(settings and stats)
  *  add in references
  *  add github link (explain issues with previous repositories?)
  *  dynamic sizing depending on device
- *  saving info to file
- *  updating stats info
  *  ISSUE - 
  *  on welcome page -> clicking "settings" multiple times causing app to freeze
  */
@@ -27,7 +24,7 @@ public partial class MainPage : ContentPage
     StatsPopUp statsPage = new StatsPopUp();
 
 
-
+    public List<Button> keys;
     private List<Label> addedLabels = new List<Label>();
     private List<Frame> addedFrames = new List<Frame>();
     private List<string> guesses = new List<string>();
@@ -52,12 +49,18 @@ public partial class MainPage : ContentPage
     public MainPage()
     {
         InitializeComponent();
+        BindingContext = _settingsViewModel;
 
-       
+        keys = new List<Button>
+        {
+            a_key, b_key, c_key, d_key, e_key, f_key, g_key, h_key, i_key, j_key,
+            k_key, l_key, m_key, n_key, o_key, p_key, q_key, r_key, s_key, t_key,
+            u_key, v_key, w_key, x_key, y_key, z_key, back_btn
+        };
+
 
         _settingsViewModel = new AppSettings();
         _wordsViewModel = new WordsViewModel();
-        BindingContext = _settingsViewModel;
         isHardMode = _settingsViewModel.IsHardMode;
         _wordsViewModel.GetWordsFromVM();
 
@@ -403,7 +406,7 @@ public partial class MainPage : ContentPage
 
                     //win percentage
                     if (gamesPlayed != 0)
-                        percentWon = (int)(numWins / gamesPlayed) * 100;
+                        percentWon = (int)(((double)numWins / gamesPlayed) * 100);
                     else
                         percentWon = 0;
                 }
@@ -480,437 +483,80 @@ public partial class MainPage : ContentPage
 
     private void DisableKeyboard()
     {
-        a_key.IsEnabled = false;
-        b_key.IsEnabled = false;
-        c_key.IsEnabled = false;
-        d_key.IsEnabled = false;
-        e_key.IsEnabled = false;
-        f_key.IsEnabled = false;
-        g_key.IsEnabled = false;
-        h_key.IsEnabled = false;
-        i_key.IsEnabled = false;
-        j_key.IsEnabled = false;
-        k_key.IsEnabled = false;
-        l_key.IsEnabled = false;
-        m_key.IsEnabled = false;
-        n_key.IsEnabled = false;
-        o_key.IsEnabled = false;
-        p_key.IsEnabled = false;
-        q_key.IsEnabled = false;
-        r_key.IsEnabled = false;
-        s_key.IsEnabled = false;
-        t_key.IsEnabled = false;
-        u_key.IsEnabled = false;
-        v_key.IsEnabled = false;
-        w_key.IsEnabled = false;
-        x_key.IsEnabled = false;
-        y_key.IsEnabled = false;
-        z_key.IsEnabled = false;
-        back_btn.IsEnabled = false;
-        enter_btn.IsEnabled = false;
-
-
-
+        foreach (var button in keys)
+        {
+            button.IsEnabled = false;
+        }//for each key
     }//DisableKeyboard()
 
     private void EnableKeyboard()
     {
-        a_key.IsEnabled = true;
-        b_key.IsEnabled = true;
-        c_key.IsEnabled = true;
-        d_key.IsEnabled = true;
-        e_key.IsEnabled = true;
-        f_key.IsEnabled = true;
-        g_key.IsEnabled = true;
-        h_key.IsEnabled = true;
-        i_key.IsEnabled = true;
-        j_key.IsEnabled = true;
-        k_key.IsEnabled = true;
-        l_key.IsEnabled = true;
-        m_key.IsEnabled = true;
-        n_key.IsEnabled = true;
-        o_key.IsEnabled = true;
-        p_key.IsEnabled = true;
-        q_key.IsEnabled = true;
-        r_key.IsEnabled = true;
-        s_key.IsEnabled = true;
-        t_key.IsEnabled = true;
-        u_key.IsEnabled = true;
-        v_key.IsEnabled = true;
-        w_key.IsEnabled = true;
-        x_key.IsEnabled = true;
-        y_key.IsEnabled = true;
-        z_key.IsEnabled = true;
-        back_btn.IsEnabled = true;
+        foreach(var button in keys)
+        {
+            button.IsEnabled = true;
+        }//for each key
     }//EnableKeyboard
 
     private void ChangeKeyGreen(char key)
     {
-        switch (key)
+        char lowerKey = char.ToLower(key);
+
+        foreach (var button in keys)
         {
-            case 'a':
-                a_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'b':
-                b_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'c':
-                c_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'd':
-                d_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'e':
-                e_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'f':
-                f_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'g':
-                g_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'h':
-                h_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'i':
-                i_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'j':
-                j_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'k':
-                k_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'l':
-                l_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'm':
-                m_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'n':
-                n_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'o':
-                o_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'p':
-                p_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'q':
-                q_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'r':
-                r_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 's':
-                s_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 't':
-                t_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'u':
-                u_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'v':
-                v_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'w':
-                w_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'x':
-                x_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'y':
-                y_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-            case 'z':
-                z_key.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
-                break;
-        }//switch
-    }//turn key green
+            if (button.Text != null && char.ToLower(button.Text[0]) == lowerKey)
+            {
+                button.BackgroundColor = (Color)Application.Current.Resources["WordleGreen"];
+                break; //break after finding button
+            }//if correct key
+        }//for each key
+    }//ChangeKeyGreen()
 
     private void ChangeKeyYellow(char key)
     {
-        switch (key)
+        char lowerKey = char.ToLower(key);
+
+        foreach (var button in keys)
         {
-            case 'a':
-                a_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'b':
-                b_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'c':
-                c_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'd':
-                d_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'e':
-                e_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'f':
-                f_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'g':
-                g_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'h':
-                h_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'i':
-                i_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'j':
-                j_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'k':
-                k_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'l':
-                l_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'm':
-                m_key.BackgroundColor = Color.FromHex("#ffc425"); 
-                break;
-            case 'n':
-                n_key.BackgroundColor = Color.FromHex("#ffc425");   
-                break;
-            case 'o':
-                o_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'p':
-                p_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'q':
-                q_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'r':
-                r_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 's':
-                s_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 't':
-                t_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'u':
-                u_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'v':
-                v_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'w':
-                w_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'x':
-                x_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'y':
-                y_key.BackgroundColor = Color.FromHex("#ffc425");
-                break;
-            case 'z':
-                z_key.BackgroundColor = Color.FromHex("#ffc425"); 
-                break;
-        }//switch
-    }//turn key yellow
+            if (button.Text != null && char.ToLower(button.Text[0]) == lowerKey)
+            {
+                button.BackgroundColor = Color.FromHex("#ffc425");
+                break; 
+            }//if correct key
+        }//for each key
+    }//ChangeKeyYellow()
     private void ChangeKeyGrey(char key)
     {
-        switch (key)
+        char lowerKey = char.ToLower(key);
+
+        foreach (var button in keys)
         {
-            case 'a':
-                a_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'b':
-                b_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'c':
-                c_key.BackgroundColor = Color.FromHex("#878686");  
-                break;
-            case 'd':
-                d_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'e':
-                e_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'f':
-                f_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'g':
-                g_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'h':
-                h_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'i':
-                i_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'j':
-                j_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'k':
-                k_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'l':
-                l_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'm':
-                m_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'n':
-                n_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'o':
-                o_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'p':
-                p_key.BackgroundColor = Color.FromHex("#878686"); 
-                break;
-            case 'q':
-                q_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'r':
-                r_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 's':
-                s_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 't':
-                t_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'u':
-                u_key.BackgroundColor = Color.FromHex("#878686");   
-                break;
-            case 'v':
-                v_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'w':
-                w_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'x':
-                x_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'y':
-                y_key.BackgroundColor = Color.FromHex("#878686");
-                break;
-            case 'z':
-                z_key.BackgroundColor = Color.FromHex("#878686"); 
-                break;
-        }//switch
-        if(isHardMode)
-        {
-            switch(key)
+            if (button.Text != null && char.ToLower(button.Text[0]) == lowerKey)
             {
-                case 'a':
-                    a_key.IsEnabled = false;
+                button.BackgroundColor = Color.FromHex("#878686");
+                break;
+            }//if correct key
+        }//for each key
+        
+        if (isHardMode)
+        {
+            foreach (var button in keys)
+            {
+                if (button.Text != null && char.ToLower(button.Text[0]) == lowerKey)
+                {
+                    button.IsEnabled = false;
                     break;
-                case 'b':
-                    b_key.IsEnabled = false;
-                    break;
-                case 'c':
-                    c_key.IsEnabled = false; 
-                    break;
-                case 'd':
-                    d_key.IsEnabled = false; 
-                    break;
-                case 'e':
-                    e_key.IsEnabled = false; 
-                    break;
-                case 'f':
-                    f_key.IsEnabled = false; 
-                    break;
-                case 'g':
-                    g_key.IsEnabled = false; 
-                    break;
-                case 'h':
-                    h_key.IsEnabled = false; 
-                    break;
-                case 'i':
-                    i_key.IsEnabled = false; 
-                    break;
-                case 'j':
-                    j_key.IsEnabled = false; 
-                    break;
-                case 'k':
-                    k_key.IsEnabled = false; 
-                    break;
-                case 'l':
-                    l_key.IsEnabled = false; 
-                    break;
-                case 'm':
-                    m_key.IsEnabled = false; 
-                    break;
-                case 'n':
-                    n_key.IsEnabled = false; 
-                    break;
-                case 'o':
-                    o_key.IsEnabled = false; 
-                    break;
-                case 'p':
-                    p_key.IsEnabled = false; 
-                    break;
-                case 'q':
-                    q_key.IsEnabled = false; 
-                    break;
-                case 'r':
-                    r_key.IsEnabled = false; 
-                    break;
-                case 's':
-                    s_key.IsEnabled = false; 
-                    break;
-                case 't':
-                    t_key.IsEnabled = false; 
-                    break;
-                case 'u':
-                    u_key.IsEnabled = false; 
-                    break;
-                case 'v':
-                    v_key.IsEnabled = false; 
-                    break;
-                case 'w':
-                    w_key.IsEnabled = false; 
-                    break;
-                case 'x':
-                    x_key.IsEnabled = false; 
-                    break;
-                case 'y':
-                    y_key.IsEnabled = false; 
-                    break;
-                case 'z':
-                    z_key.IsEnabled = false; 
-                    break;
-            }
-        }
-    }//turn key grey
+                }//if correct button
+            }//for each key
+        }//if hard mode is enabled
+    }//ChangeKeyGrey()
 
-    private void ResetKeyColor()
+    private void ResetKeyColor() 
     {
-        a_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        b_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        c_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        d_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        e_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        f_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        g_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        h_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        i_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        j_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        k_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        l_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        m_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        n_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        o_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        p_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        q_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        r_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        s_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        t_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        u_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        v_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        w_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        x_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        y_key.BackgroundColor = Color.FromHex("#d6d4d4");
-        z_key.BackgroundColor = Color.FromHex("#d6d4d4");
-    }
+        foreach (var button in keys) 
+        {
+            button.BackgroundColor = Color.FromHex("#d6d4d4");
+        }//for each key
+    }//ResetKeyColor()
 
-}//class end
+}//Class
 
