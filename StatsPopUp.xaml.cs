@@ -1,5 +1,6 @@
 using CommunityToolkit.Maui.Views;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 
@@ -90,11 +91,13 @@ public partial class StatsPopUp : Popup, INotifyPropertyChanged
                     //number of wins
                     NumWins = int.Parse(sr.ReadLine());
                     //win percentage
-                    PercentWon = int.Parse(sr.ReadLine());
+                    //PercentWon = int.Parse(sr.ReadLine());
                     //streak
                     Streak = int.Parse(sr.ReadLine());
                     //games played
                     GamesPlayed = int.Parse(sr.ReadLine());
+
+                    PercentWon = (int)(NumWins / GamesPlayed) * 100;
                 }
             }
             catch (Exception ex)
@@ -110,6 +113,15 @@ public partial class StatsPopUp : Popup, INotifyPropertyChanged
             Streak = 0;
             GamesPlayed = 0;
         }//else no file
+
+
+        Debug.WriteLine($"Percent won: {PercentWon}");
+        Debug.WriteLine($"Num wins: {NumWins}");
+        Debug.WriteLine($"Streak: {Streak}");
+        Debug.WriteLine($"Games Played: {GamesPlayed}");
+
+
+
     }//
 
 

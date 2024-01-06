@@ -18,8 +18,6 @@ namespace Wordle.ViewModels
             httpClient = new HttpClient();
             ListofWords = new List<string>();
 
-           
-
             if(File.Exists(FilePath))
             {
                 ReadFromFile();

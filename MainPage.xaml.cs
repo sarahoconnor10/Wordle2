@@ -64,10 +64,11 @@ public partial class MainPage : ContentPage
 
     public async void PlayGame()
     {
+        gamesPlayed++;
+
         GetDetails();
         RestartGame();
         GetWord();
-        gamesPlayed++;
     }
 
     private void playAgain_btn_Clicked(object sender, EventArgs e)
@@ -361,9 +362,7 @@ public partial class MainPage : ContentPage
     }//Lose()
 
     private async Task SaveDetails()
-    {
-        percentWon = numWins / gamesPlayed * 100;
-        
+    {        
         try
         {
             //write details to a file
@@ -372,7 +371,7 @@ public partial class MainPage : ContentPage
                 //number of wins
                 sw.WriteLine(numWins);
                 //win percentage
-                sw.WriteLine(percentWon);
+                //sw.WriteLine(percentWon);
                 //streak
                 sw.WriteLine(streak);
                 //games played
@@ -397,11 +396,13 @@ public partial class MainPage : ContentPage
                     //number of wins
                     numWins = int.Parse(sr.ReadLine());
                     //win percentage
-                    percentWon = int.Parse(sr.ReadLine());
+                    //percentWon = int.Parse(sr.ReadLine());
                     //streak
                     streak = int.Parse(sr.ReadLine());
                     //games played
                     gamesPlayed = int.Parse(sr.ReadLine());
+
+                    percentWon = numWins / gamesPlayed * 100;
                 }
             }
             catch (Exception ex)
@@ -412,7 +413,6 @@ public partial class MainPage : ContentPage
         else
         {
             numWins = 0;
-            percentWon = 0;
             streak = 0;
             gamesPlayed = 0;
         }//else no file
@@ -428,6 +428,7 @@ public partial class MainPage : ContentPage
 
         //enable keyboard
         EnableKeyboard();
+        ResetKeyColor();
         gameRunning = true;
 
         playAgain_btn.IsVisible = false;
@@ -504,6 +505,8 @@ public partial class MainPage : ContentPage
         z_key.IsEnabled = false;
         back_btn.IsEnabled = false;
         enter_btn.IsEnabled = false;
+
+
 
     }//DisableKeyboard()
 
@@ -875,6 +878,36 @@ public partial class MainPage : ContentPage
             }
         }
     }//turn key grey
+
+    private void ResetKeyColor()
+    {
+        a_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        b_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        c_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        d_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        e_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        f_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        g_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        h_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        i_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        j_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        k_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        l_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        m_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        n_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        o_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        p_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        q_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        r_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        s_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        t_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        u_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        v_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        w_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        x_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        y_key.BackgroundColor = Color.FromHex("#d6d4d4");
+        z_key.BackgroundColor = Color.FromHex("#d6d4d4");
+    }
 
 }//class end
 
