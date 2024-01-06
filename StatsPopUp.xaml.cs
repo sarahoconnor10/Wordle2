@@ -12,6 +12,7 @@ public partial class StatsPopUp : Popup, INotifyPropertyChanged
     private int _numWins;
     private int _streak;
     private int _gamesPlayed;
+    public string SaveFilePath => System.IO.Path.Combine(FileSystem.Current.AppDataDirectory, "savefile.txt");
 
 
     public StatsPopUp()
@@ -19,13 +20,11 @@ public partial class StatsPopUp : Popup, INotifyPropertyChanged
 		InitializeComponent();
         BindingContext = this;
         UpdateStatistics();
-
-
-    }
+    }//constructor
     public void UpdateStatistics()
     {
         GetDetails();
-    }
+    }//UpdateStatistics()
     public int PercentWon
     {
         get => _percentWon;
@@ -51,7 +50,7 @@ public partial class StatsPopUp : Popup, INotifyPropertyChanged
                 OnPropertyChanged(nameof(NumWins));
             }
         }
-    }
+    }//NumWins
 
     public int Streak
     {
@@ -64,7 +63,7 @@ public partial class StatsPopUp : Popup, INotifyPropertyChanged
                 OnPropertyChanged(nameof(Streak));
             }
         }
-    }
+    }//Streak
     public int GamesPlayed
     {
         get => _gamesPlayed;
@@ -76,8 +75,7 @@ public partial class StatsPopUp : Popup, INotifyPropertyChanged
                 OnPropertyChanged(nameof(GamesPlayed));
             }
         }
-    }
-    public string SaveFilePath => System.IO.Path.Combine(FileSystem.Current.AppDataDirectory, "savefile.txt");
+    }//GamesPlayed
 
     public async Task GetDetails()
     {
@@ -100,14 +98,13 @@ public partial class StatsPopUp : Popup, INotifyPropertyChanged
                         PercentWon = (int)(((double)NumWins / GamesPlayed) * 100);
                     else
                         PercentWon = 0;
-                }
-            }
+                }//StreamReader
+            }//try
             catch (Exception ex)
             {
                 await Shell.Current.DisplayAlert("Error reading details from file", ex.Message, "OK");
-
-            }
-        }
+            }//catch
+        }//if file exists - read from it
         else
         {
             NumWins = 0;
@@ -115,16 +112,7 @@ public partial class StatsPopUp : Popup, INotifyPropertyChanged
             Streak = 0;
             GamesPlayed = 0;
         }//else no file
-
-
-        Debug.WriteLine($"Percent won: {PercentWon}");
-        Debug.WriteLine($"Num wins: {NumWins}");
-        Debug.WriteLine($"Streak: {Streak}");
-        Debug.WriteLine($"Games Played: {GamesPlayed}");
-
-
-
-    }//
+    }//GetDetails()
 
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -132,5 +120,5 @@ public partial class StatsPopUp : Popup, INotifyPropertyChanged
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+    }//OnPropertyChanged()
 }//class

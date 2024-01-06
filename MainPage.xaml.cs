@@ -12,24 +12,22 @@ namespace Wordle;
  *  add in references
  *  add github link (explain issues with previous repositories?)
  *  dynamic sizing depending on device
- *  ISSUE - 
- *  on welcome page -> clicking "settings" multiple times causing app to freeze
  */
 
 public partial class MainPage : ContentPage
 {
-    private AppSettings _settingsViewModel;
-    private WordsViewModel _wordsViewModel;
-    SettingsPopUp settingsPage = new SettingsPopUp();
-    StatsPopUp statsPage = new StatsPopUp();
+    //variables - pages / viewmodels
+    //private AppSettings _settingsViewModel;
+    private WordsViewModel _wordsViewModel = new WordsViewModel();
 
-
+    //lists
     public List<Button> keys;
     private List<Label> addedLabels = new List<Label>();
     private List<Frame> addedFrames = new List<Frame>();
     private List<string> guesses = new List<string>();
     private List<string> words = new List<string>();
     private List<char> correctLettersGuessed = new List<char>();
+    private List<char> yellowLettersGuessed = new List<char>();
     private List<char> wrongLettersGuessed = new List<char>();
     
     private Random random = new Random();
@@ -43,33 +41,30 @@ public partial class MainPage : ContentPage
     bool isHardMode;
     bool validInput;
     bool gridDrawn = false;
-    
+    bool won = false;
     private string chosenWord { get; set; }
 
     public MainPage()
     {
         InitializeComponent();
-        BindingContext = _settingsViewModel;
+        BindingContext = _wordsViewModel;
+       
+        _wordsViewModel.GetWordsFromVM();
 
+        //populate list of keys
         keys = new List<Button>
         {
             a_key, b_key, c_key, d_key, e_key, f_key, g_key, h_key, i_key, j_key,
             k_key, l_key, m_key, n_key, o_key, p_key, q_key, r_key, s_key, t_key,
             u_key, v_key, w_key, x_key, y_key, z_key, back_btn
         };
-
-
-        _settingsViewModel = new AppSettings();
-        _wordsViewModel = new WordsViewModel();
-        isHardMode = _settingsViewModel.IsHardMode;
-        _wordsViewModel.GetWordsFromVM();
-
+        isHardMode = (bool)Application.Current.Resources["IsHardMode"];
         PlayGame();
+
     }//MainPage constructor
 
-    public async void PlayGame()
+    public void PlayGame()
     {
-
         GetDetails();
         RestartGame();
         GetWord();
@@ -78,7 +73,7 @@ public partial class MainPage : ContentPage
     private void playAgain_btn_Clicked(object sender, EventArgs e)
     {
         PlayGame();
-    }//playAgain
+    }//playAgain_btn_Clicked()
 
     private void DrawGrid()
     {
@@ -89,7 +84,7 @@ public partial class MainPage : ContentPage
 
             for (int i = 0; i < 5; i++)
                 GuessGrid.AddColumnDefinition(new ColumnDefinition());
-        }
+        }//if grid hasnt been drawn - first iteration
 
         for (int row = 0; row < 5; row++)
         {
@@ -109,14 +104,14 @@ public partial class MainPage : ContentPage
             }//inner loop - col
         }//outer loop - row
         gridDrawn = true;
-    }//drawGrid()
+    }//DrawGrid()
 
     private async void GetWord()
     {
         words = _wordsViewModel.Words;
         chosenWord = PickWord();
         Debug.WriteLine(chosenWord);
-    }//getWords
+    }//GetWord()
 
     public string PickWord()
     {
@@ -129,7 +124,7 @@ public partial class MainPage : ContentPage
         {
             return null;
         }//else list is empty
-    }//pickword()
+    }//PickWord()
 
     private async void Button_Clicked(object sender, EventArgs e)
     {
@@ -159,18 +154,12 @@ public partial class MainPage : ContentPage
                 await label.ScaleTo(1, 200);
 
                 if (letterCounter == 5)
-                {
                     enter_btn.IsEnabled = true;
-                    //enter_btn.BackgroundColor = (Color)Application.Current.Resources["EnabledButtonColor"];
-                }
                 else
-                { 
                     enter_btn.IsEnabled = false;
-                    //enter_btn.BackgroundColor = (Color)Application.Current.Resources["DisabledButtonColor"];
-                }
-            }
+            }//if button
         }//if num guesses is less than 6
-    }//keyboard button clicked
+    }//Button_Clicked()
 
     private void Backspace_Clicked(object sender, EventArgs e)
     {
@@ -185,19 +174,18 @@ public partial class MainPage : ContentPage
                 enter_btn.IsEnabled = false;
                 //enter_btn.BackgroundColor = (Color)Application.Current.Resources["EnabledButtonColor"];
             }
-        }
+        }//if greater than 0
         if(letterCounter < 0)
         {
             letterCounter = GuessGrid.ColumnDefinitions.Count - 1;
-        }
-    }//backspace_clicked
+        }//if counter less than 0
+    }//Backspace_Clicked()
 
     private void Enter_Clicked(object sender, EventArgs e)
     {
             if (guessCounter < 6)
             {
                 guess = "";
-
                 int rowIndex = guessCounter;
                 bool isRowFull = true;
 
@@ -215,13 +203,13 @@ public partial class MainPage : ContentPage
                             guess += label.Text;
                         }
                     }
-                }
+                }//for each letter - add to guess string
                 guess = guess.ToLower();
                 ValidWord();
                 if(!validInput)
                 {
                     DisplayAlert("Invalid Input", "Word not in word list", "Ok");
-                }
+                }//if invalid
                 else
                 {
                     if (isRowFull)
@@ -232,25 +220,24 @@ public partial class MainPage : ContentPage
                         letterCounter = 0;
                         Debug.WriteLine(guess);
                     }
-                }
-            }
-    }//enter
+                }//else
+            }//if less than 6 guesses
+    }//Enter_Clicked()
 
     private async void checkWord()
     {
         enter_btn.IsEnabled = false;
-  
         int row = guessCounter;
-
 
         List<char> chosenLetters = chosenWord.ToList();
         List<int> greenLetters = new List<int>();
         List<int> yellowLetters = new List<int>();
 
+
         
         for (int col = 0; col < 5; col++)
         {
-            //first go through word looking for correct spots
+            //go through word looking for correct spots
             if (guess[col] == chosenWord[col])
             {
                 //record green indexes
@@ -258,14 +245,15 @@ public partial class MainPage : ContentPage
                 correctLettersGuessed.Add(guess[col]);
                 chosenLetters.Remove(guess[col]);
             }//if letter == letter
-        }//for - find green spaces
+        }//for green spaces
         for (int col = 0; col < 5; col++)
         {
             if (chosenLetters.Contains(guess[col]))
             {
                 yellowLetters.Add(col);
                 chosenLetters.Remove(guess[col]);
-            }
+                yellowLettersGuessed.Add(guess[col]);
+            }//record yellow letters
         }//for yellow spaces
        
         for (int column = 0; column < 5; column++)
@@ -279,10 +267,10 @@ public partial class MainPage : ContentPage
                     currentFrame = (Frame)child;
                     break;
                 }
-            }
+            }//for each frame
             if (currentFrame != null)
             {
-                
+                //frame animation
                 await currentFrame.ScaleTo(1.2, 100);
                 await Task.Delay(100);
                 await currentFrame.ScaleTo(1, 100);
@@ -292,7 +280,7 @@ public partial class MainPage : ContentPage
                     //turn square green
                     currentFrame.BackgroundColor = Color.FromHex("#019a01");
                     ChangeKeyGreen(guess[column]);
-                }
+                }//if green letter
                 else if (yellowLetters.Contains(column))
                 {
                     //else turn square yellow
@@ -301,7 +289,7 @@ public partial class MainPage : ContentPage
                     {
                         ChangeKeyYellow(guess[column]);
                     }
-                }
+                }//if yellow letter
                 else
                 {
                     //turn square darker grey
@@ -309,22 +297,23 @@ public partial class MainPage : ContentPage
                     if (!correctLettersGuessed.Contains(guess[column]))
                     {
                         wrongLettersGuessed.Add(guess[column]);
-                        ChangeKeyGrey(guess[column]);
+                        if (!yellowLettersGuessed.Contains(guess[column]))
+                            ChangeKeyGrey(guess[column]);
                     }
-                }
-            }
-                
+                }//or else turn grey
+            }//for each letter in guess
         }//for 
         if(greenLetters.Count == 5) 
         {
+            won = true;
             Win();
-        }
+        }//if all letters are green
         chosenLetters.Clear();
         greenLetters.Clear();
         yellowLetters.Clear();
-        if (guessCounter == 6)
+        if (guessCounter == 6 && !won)// if run out of guesses
            Lose();
-    }//check word
+    }//CheckWord()
 
     private void ValidWord()
     {
@@ -334,10 +323,10 @@ public partial class MainPage : ContentPage
             {
                 validInput = true;
                 return;
-            }
+            }//if input does exist in list
             else
                 validInput = false;
-        }
+        }//for each word in list
     }//ValidWord()
 
     private async void Win()
@@ -350,8 +339,10 @@ public partial class MainPage : ContentPage
         DisableKeyboard();
         gameRunning = false;
         SaveDetails();
+        
+        StatsPopUp statsPage = new StatsPopUp();
         statsPage.UpdateStatistics();
-        await this.ShowPopupAsync(new StatsPopUp());
+        await this.ShowPopupAsync(statsPage);
     }//Win()
     private async void Lose()
     {
@@ -362,9 +353,9 @@ public partial class MainPage : ContentPage
         DisableKeyboard();
         gameRunning = false;
         SaveDetails();
+        StatsPopUp statsPage = new StatsPopUp();
         statsPage.UpdateStatistics();
-        await this.ShowPopupAsync(new StatsPopUp());
-
+        await this.ShowPopupAsync(statsPage);
     }//Lose()
 
     private async Task SaveDetails()
@@ -386,7 +377,7 @@ public partial class MainPage : ContentPage
         {
             await Shell.Current.DisplayAlert("Error saving details", ex.Message, "OK");
         }//catch
-    }//SaveDetails
+    }//SaveDetails()
 
     public async Task GetDetails()
     {
@@ -409,21 +400,21 @@ public partial class MainPage : ContentPage
                         percentWon = (int)(((double)numWins / gamesPlayed) * 100);
                     else
                         percentWon = 0;
-                }
-            }
+                }//StreamReader
+            }//try
             catch (Exception ex)
             {
                 await Shell.Current.DisplayAlert("Error reading details from file", ex.Message, "OK");
-            }
-        }
+            }//catch
+        }//if file exists
         else
         {
             numWins = 0;
             streak = 0;
             gamesPlayed = 0;
-        }//else no file
-    }//
-    
+        }//else no file - initialise to 0
+    }//GetDetails()
+
     public void RestartGame()
     {
         //clear grid
@@ -438,8 +429,8 @@ public partial class MainPage : ContentPage
         gameRunning = true;
 
         playAgain_btn.IsVisible = false;
-
-    }//RestartGame
+        isHardMode = (bool)Application.Current.Resources["IsHardMode"];
+    }//RestartGame()
     private void ClearGrid()
     {
         foreach (var label in addedLabels)
@@ -457,29 +448,33 @@ public partial class MainPage : ContentPage
         addedFrames.Clear();
         guesses.Clear();
         correctLettersGuessed.Clear();
+        yellowLettersGuessed.Clear();
         wrongLettersGuessed.Clear();
         guess = "";
         letterCounter = 0;
         guessCounter = 0;
+        won = false;
     }//ClearGrid();
-
 
     private async void DisplayAnswer(string answer)
     {
         await DisplayAlert("Answer", $"The correct word was: {answer}", "OK");
-    }//display answer
-    
+    }//DisplayAnswer()
+
     private async void GoToSettings(object sender, EventArgs e)
     {
-        if(!gameRunning)
+        if (!gameRunning)
+        {
+            SettingsPopUp settingsPage = new SettingsPopUp();
             await this.ShowPopupAsync(settingsPage);
-
-    }//GoToSettings
+        }
+    }//GoToSettings()
     private async void GoToStats(object sender, EventArgs e)
     {
+        StatsPopUp statsPage = new StatsPopUp();
         statsPage.UpdateStatistics();
         await this.ShowPopupAsync(statsPage);
-    }//GoToStats
+    }//GoToStats()
 
     private void DisableKeyboard()
     {
@@ -495,7 +490,7 @@ public partial class MainPage : ContentPage
         {
             button.IsEnabled = true;
         }//for each key
-    }//EnableKeyboard
+    }//EnableKeyboard()
 
     private void ChangeKeyGreen(char key)
     {

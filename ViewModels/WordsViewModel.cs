@@ -21,7 +21,7 @@ namespace Wordle.ViewModels
             if(File.Exists(FilePath))
             {
                 ReadFromFile();
-            }
+            }//if file exists
         }//constructor
 
         private async Task ReadFromFile()
@@ -109,5 +109,37 @@ namespace Wordle.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }//OnPropertyChanged()
+
+
+        private bool _isHardMode;
+        public bool IsHardMode
+        {
+            get { return _isHardMode; }
+            set
+            {
+                if (_isHardMode != value)
+                {
+                    _isHardMode = value;
+                    OnPropertyChanged(nameof(IsHardMode));
+                }
+            }//set
+        }//isHardMode
+
+        private bool _isDarkMode;
+        public bool IsDarkMode
+        {
+            get { return _isDarkMode; }
+            set
+            {
+                if (_isDarkMode != value)
+                {
+                    _isDarkMode = value;
+                    OnPropertyChanged(nameof(IsDarkMode));
+                }
+            }//set
+        }//isDarkMode
+
     }//class
 }//namespace
+
+

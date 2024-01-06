@@ -5,7 +5,7 @@
              x:Class="Wordle.StatsPopUp">
 
     
-    <VerticalStackLayout Margin="10" WidthRequest="300" HeightRequest="250" VerticalOptions="Center" HorizontalOptions="Center">
+    <VerticalStackLayout Margin="10" WidthRequest="300" HeightRequest="180" VerticalOptions="Center" HorizontalOptions="Center">
         <Label 
             Text="STATISTICS"
             VerticalOptions="Center" 

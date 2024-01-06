@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mct:Popup  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+            x:Class="Wordle.HowToPlay">
+    <VerticalStackLayout Margin="10" WidthRequest="400" HeightRequest="400" VerticalOptions="Center" HorizontalOptions="Center">
+        <Image 
+             Source="wordle_logo2.png" 
+             HorizontalOptions="Center" 
+             WidthRequest="280"
+             HeightRequest="80"
+             />
+        <Label 
+            Text="How To Play"
+            VerticalOptions="Start" 
+            HorizontalOptions="Start"
+            TextColor="Black"
+            FontSize="Medium"
+            FontFamily="DroidSerifRegular"
+            Margin="15, 15, 0, 0"
+            FontAttributes="Bold" />
+        <Label 
+            Text="• Guess the word within 6 tries"
+            VerticalOptions="Start" 
+            HorizontalOptions="Start"
+            TextColor="Black"
+            FontSize="Body"
+            FontFamily="DroidSerifRegular"
+            Margin="15, 5, 0, 0" />
+        <Label
+            Text="• Must be a valid 5-letter word"
+            VerticalOptions="Start" 
+            HorizontalOptions="Start"
+            TextColor="Black"
+            FontSize="Body"
+            FontFamily="DroidSerifRegular"
+            Margin="15, 2, 0, 0" />
+        <Label
+            Text="• Grid Tiles will change colour to show your progress"
+            VerticalOptions="Start" 
+            HorizontalOptions="Start"
+            TextColor="Black"
+            FontSize="Body"
+            FontFamily="DroidSerifRegular"
+            Margin="15, 2, 0, 0" />
+
+        <Label
+            Text="Example"
+            VerticalOptions="Start" 
+            HorizontalOptions="Start"
+            TextColor="Black"
+            FontSize="Body"
+            FontFamily="DroidSerifRegular"
+            FontAttributes="Bold"
+            Margin="15, 20, 0, 0" />
+        
+         <Image 
+             Source="wordle_example.png" 
+             HorizontalOptions="Start" 
+             WidthRequest="200" 
+             HeightRequest="100"
+             Margin="0, -20, 0, -20"/>
+
+        <HorizontalStackLayout>
+            <Label
+                Text="W"
+                VerticalOptions="Start" 
+                HorizontalOptions="Start"
+                TextColor="Black"
+                FontSize="Body"
+                FontFamily="DroidSerifRegular"
+                FontAttributes="Bold"
+                Margin="15, 0, 0, 5" />
+            <Label
+                Text=" is in the word, and is in the correct position"
+                VerticalOptions="Start" 
+                HorizontalOptions="Start"
+                TextColor="Black"
+                FontSize="Body"
+                FontFamily="DroidSerifRegular"
+                Margin="0, 0, 0, 5"/>
+        </HorizontalStackLayout>
+        <HorizontalStackLayout>
+            <Label
+                Text="I"
+                VerticalOptions="Start" 
+                HorizontalOptions="Start"
+                TextColor="Black"
+                FontSize="Body"
+                FontFamily="DroidSerifRegular"
+                FontAttributes="Bold"
+                Margin="15, 0, 0, 5" />
+            <Label
+                Text=" is in the word, but is in the incorrect position"
+                VerticalOptions="Start" 
+                HorizontalOptions="Start"
+                TextColor="Black"
+                FontSize="Body"
+                FontFamily="DroidSerifRegular"
+                Margin="0, 0, 0, 5"/>
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout>
+            <Label
+                Text="L , T and S"
+                VerticalOptions="Start" 
+                HorizontalOptions="Start"
+                TextColor="Black"
+                FontSize="Body"
+                FontFamily="DroidSerifRegular"
+                FontAttributes="Bold"
+                Margin="15, 0, 0, 5" />
+            <Label
+                Text=" are not in the word"
+                VerticalOptions="Start" 
+                HorizontalOptions="Start"
+                TextColor="Black"
+                FontSize="Body"
+                FontFamily="DroidSerifRegular"
+                Margin="0, 0, 0, 5"/>
+        </HorizontalStackLayout>
+
+
+    </VerticalStackLayout>
+</mct:Popup>

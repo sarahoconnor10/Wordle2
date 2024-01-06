@@ -8,7 +8,8 @@
         <VerticalStackLayout>
             <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="Start" Margin="0, 0, 15, 0">
                     <ImageButton
-                        Source="cog_lm.png"   
+                        Source="cog.png" 
+                        x:Name="cog_image"
                         Clicked="GoToSettings"
                         HeightRequest="20"
                         WidthRequest="20"
@@ -25,6 +26,7 @@
                 <Label x:Name="GameTitle" Text="Wordle"  FontSize="Large" 
                        HorizontalOptions="Center" Margin="0, 5, 0, 5" FontAttributes="Bold"
                        TextColor="{DynamicResource WordleGreen}" FontFamily="DroidSerifRegular"/>
+                
                 <Grid x:Name="GuessGrid" HorizontalOptions="Center" Margin="0,0,0,10"
                   BackgroundColor="{DynamicResource BackgroundColor}" VerticalOptions="CenterAndExpand" HeightRequest="300" 
                   WidthRequest="300" RowSpacing="5" ColumnSpacing="5">
@@ -32,38 +34,38 @@
                 </Grid>
 
                 <HorizontalStackLayout HorizontalOptions="Center">
-                    <Button x:Name="q_key" Text="Q" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="w_key" Text="W" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="e_key" Text="E" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="r_key" Text="R" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="t_key" Text="T" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="y_key" Text="Y" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="u_key" Text="U" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="i_key" Text="I" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="o_key" Text="O" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="p_key"  Text="P" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="q_key" Text="Q" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="w_key" Text="W" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="e_key" Text="E" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="r_key" Text="R" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="t_key" Text="T" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="y_key" Text="Y" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="u_key" Text="U" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="i_key" Text="I" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="o_key" Text="O" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="p_key"  Text="P" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
                 </HorizontalStackLayout>
                 <HorizontalStackLayout HorizontalOptions="Center">
-                    <Button x:Name="a_key"  Text="A" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="s_key"  Text="S" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="d_key"  Text="D" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="f_key"  Text="F" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="g_key"  Text="G" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="h_key"  Text="H" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="j_key"  Text="J" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="k_key"  Text="K" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="l_key"  Text="L" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="a_key"  Text="A" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="s_key"  Text="S" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="d_key"  Text="D" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="f_key"  Text="F" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="g_key"  Text="G" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="h_key"  Text="H" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="j_key"  Text="J" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="k_key"  Text="K" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="l_key"  Text="L" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
                 </HorizontalStackLayout>
                 <HorizontalStackLayout HorizontalOptions="Center">
-                    <Button x:Name="enter_btn"  Text="Enter" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Enter_Clicked" IsEnabled="False"/>
-                    <Button x:Name="z_key"  Text="Z" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="x_key"  Text="X" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="c_key"  Text="C" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="v_key"  Text="V" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="b_key"  Text="B" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="n_key"  Text="N" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="m_key"  Text="M" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
-                    <Button x:Name="back_btn"  Text="Backspace" TextColor="{DynamicResource TextColor}" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Backspace_Clicked"/>
+                    <Button x:Name="enter_btn"  Text="Enter" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Enter_Clicked" IsEnabled="False"/>
+                    <Button x:Name="z_key"  Text="Z" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="x_key"  Text="X" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="c_key"  Text="C" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="v_key"  Text="V" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="b_key"  Text="B" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="n_key"  Text="N" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="m_key"  Text="M" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Button_Clicked"/>
+                    <Button x:Name="back_btn"  Text="Backspace" TextColor="Black" BackgroundColor="{DynamicResource DisabledButtonColor}" Clicked="Backspace_Clicked"/>
                 </HorizontalStackLayout>
             </VerticalStackLayout>
 

@@ -2,9 +2,8 @@
 <mct:Popup  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
-             
             x:Class="Wordle.SettingsPopUp">
-    <VerticalStackLayout Margin="10" WidthRequest="300" HeightRequest="250" VerticalOptions="Center" HorizontalOptions="Center">
+    <VerticalStackLayout Margin="10" WidthRequest="300" HeightRequest="230" VerticalOptions="Center" HorizontalOptions="Center">
         <Label 
             Text="SETTINGS"
             VerticalOptions="Center" 
@@ -29,6 +28,7 @@
                 OnColor="Grey"
                 ThumbColor="DarkGrey"
                 Margin="20,3,10,0"
+                IsToggled="{DynamicResource IsDarkMode}"
                 Toggled="darkMode_switch_Toggled"
                 />
 
@@ -47,11 +47,18 @@
                 OnColor="Grey"
                 ThumbColor="DarkGrey"
                 Margin="20,3,10,0"
+                IsToggled="{DynamicResource IsHardMode}"
                 Toggled="hardMode_switch_Toggled"
-                
+       
                 />
-
         </HorizontalStackLayout>
+        <Label
+            Text="Any letters revealed to be &#xA;wrong cannot be used again"
+            FontSize="11"
+            FontFamily="DroidSerifRegular"
+            TextColor="DarkSlateGrey" 
+            Margin="10, 0, 0, 0"
+            />
     </VerticalStackLayout>
 </mct:Popup>
     
