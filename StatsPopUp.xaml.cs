@@ -90,14 +90,16 @@ public partial class StatsPopUp : Popup, INotifyPropertyChanged
                 {
                     //number of wins
                     NumWins = int.Parse(sr.ReadLine());
-                    //win percentage
-                    //PercentWon = int.Parse(sr.ReadLine());
                     //streak
                     Streak = int.Parse(sr.ReadLine());
                     //games played
                     GamesPlayed = int.Parse(sr.ReadLine());
 
-                    PercentWon = (int)(NumWins / GamesPlayed) * 100;
+                    //win percentage
+                    if (GamesPlayed != 0)
+                        PercentWon = (int)(NumWins / GamesPlayed) * 100;
+                    else
+                        PercentWon = 0;
                 }
             }
             catch (Exception ex)

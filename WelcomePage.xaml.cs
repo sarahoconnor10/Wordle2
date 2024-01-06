@@ -9,6 +9,7 @@ public partial class WelcomePage : ContentPage
     public WelcomePage()
     {
         InitializeComponent();
+        
     }//WelcomePage constructor
 
     private async void PlayButton_Clicked(object sender, EventArgs e)

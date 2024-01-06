@@ -53,6 +53,8 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
 
+       
+
         _settingsViewModel = new AppSettings();
         _wordsViewModel = new WordsViewModel();
         BindingContext = _settingsViewModel;
@@ -64,17 +66,16 @@ public partial class MainPage : ContentPage
 
     public async void PlayGame()
     {
-        gamesPlayed++;
 
         GetDetails();
         RestartGame();
         GetWord();
-    }
+    }//PlayGame()
 
     private void playAgain_btn_Clicked(object sender, EventArgs e)
     {
         PlayGame();
-    }//playagain
+    }//playAgain
 
     private void DrawGrid()
     {
@@ -338,6 +339,7 @@ public partial class MainPage : ContentPage
 
     private async void Win()
     {
+        gamesPlayed++;
         playAgain_btn.IsVisible = true;
         numWins++;
         streak++;
@@ -350,6 +352,7 @@ public partial class MainPage : ContentPage
     }//Win()
     private async void Lose()
     {
+        gamesPlayed++;
         playAgain_btn.IsVisible = true;
         streak = 0;
         DisplayAnswer(chosenWord);
@@ -362,7 +365,7 @@ public partial class MainPage : ContentPage
     }//Lose()
 
     private async Task SaveDetails()
-    {        
+    {
         try
         {
             //write details to a file
@@ -370,8 +373,6 @@ public partial class MainPage : ContentPage
             {
                 //number of wins
                 sw.WriteLine(numWins);
-                //win percentage
-                //sw.WriteLine(percentWon);
                 //streak
                 sw.WriteLine(streak);
                 //games played
@@ -395,14 +396,16 @@ public partial class MainPage : ContentPage
                 {
                     //number of wins
                     numWins = int.Parse(sr.ReadLine());
-                    //win percentage
-                    //percentWon = int.Parse(sr.ReadLine());
                     //streak
                     streak = int.Parse(sr.ReadLine());
                     //games played
                     gamesPlayed = int.Parse(sr.ReadLine());
 
-                    percentWon = numWins / gamesPlayed * 100;
+                    //win percentage
+                    if (gamesPlayed != 0)
+                        percentWon = (int)(numWins / gamesPlayed) * 100;
+                    else
+                        percentWon = 0;
                 }
             }
             catch (Exception ex)
