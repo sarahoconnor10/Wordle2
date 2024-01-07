@@ -12,16 +12,14 @@
             FontSize="Small"
             FontFamily="DroidSerifRegular"
             Margin="0, 30, 0, 0"
-            FontAttributes="Bold"
-            />
+            FontAttributes="Bold"/>
         <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="0,15,0,0">
             <Label 
                 Text="Dark Mode"
                 FontSize="Medium"
                 FontFamily="DroidSerifRegular"
                 TextColor="Black" 
-                Margin="10, 10, 10, 0"
-                />
+                Margin="10, 10, 10, 0"/>
             <Switch 
                 x:Name="darkMode_switch" 
                 HorizontalOptions="End" 
@@ -29,18 +27,16 @@
                 ThumbColor="DarkGrey"
                 Margin="20,3,10,0"
                 IsToggled="{DynamicResource IsDarkMode}"
-                Toggled="darkMode_switch_Toggled"
-                />
-
+                Toggled="darkMode_switch_Toggled"/>
         </HorizontalStackLayout>
+        
         <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="0,15,0,0">
             <Label 
                 Text="Hard Mode"
                 FontSize="Medium"
                 FontFamily="DroidSerifRegular"
                 TextColor="Black" 
-                Margin="10, 10, 10, 0"
-                />
+                Margin="10, 10, 10, 0"/>
             <Switch 
                 x:Name="hardMode_switch"  
                 HorizontalOptions="End" 
@@ -48,17 +44,15 @@
                 ThumbColor="DarkGrey"
                 Margin="20,3,10,0"
                 IsToggled="{DynamicResource IsHardMode}"
-                Toggled="hardMode_switch_Toggled"
-       
-                />
+                Toggled="hardMode_switch_Toggled"/>
         </HorizontalStackLayout>
+        
         <Label
             Text="Any letters revealed to be &#xA;wrong cannot be used again"
             FontSize="11"
             FontFamily="DroidSerifRegular"
             TextColor="DarkSlateGrey" 
-            Margin="10, 0, 0, 0"
-            />
+            Margin="10, 0, 0, 0"/>
     </VerticalStackLayout>
 </mct:Popup>
     

@@ -5,13 +5,12 @@ namespace Wordle;
 
 public partial class SettingsPopUp : Popup
 {
+    //variables
     private WordsViewModel _viewModel = new WordsViewModel();
     bool isHard;
-    bool isDark;
-
-
     public SettingsPopUp()
 	{
+        //constructor - assigns viewmodel, find value for hard mode and assigns it to the switch.
 		InitializeComponent();
         BindingContext = _viewModel;
         isHard = (bool)Application.Current.Resources["IsHardMode"];
@@ -21,6 +20,7 @@ public partial class SettingsPopUp : Popup
 
     private void darkMode_switch_Toggled(object sender, ToggledEventArgs e)
     {
+        //changes dark mode value and toggles theme.
         try
         {
             Application.Current.Resources["IsDarkMode"] = e.Value;
@@ -31,12 +31,12 @@ public partial class SettingsPopUp : Popup
         catch (Exception ex)
         {
             Shell.Current.DisplayAlert("Error toggling dark mode", ex.Message, "OK");
-
         }
     }//darkMode_switch_Toggled
 
     private async void hardMode_switch_Toggled(object sender, ToggledEventArgs e)
     {
+        //changes hard mode value and toggles switch.
         try
         {
             Application.Current.Resources["IsHardMode"] = e.Value;
@@ -49,6 +49,7 @@ public partial class SettingsPopUp : Popup
     }//hardMode_switch_Toggled()
     private void ToggleTheme(bool isDarkMode)
     {
+        //changes resource backgrounds depending on theme.
         var app = (App)Application.Current;
 
         if(isDarkMode)

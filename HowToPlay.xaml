@@ -3,13 +3,13 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
             x:Class="Wordle.HowToPlay">
+    
     <VerticalStackLayout Margin="10" WidthRequest="400" HeightRequest="400" VerticalOptions="Center" HorizontalOptions="Center">
         <Image 
              Source="wordle_logo2.png" 
              HorizontalOptions="Center" 
              WidthRequest="280"
-             HeightRequest="80"
-             />
+             HeightRequest="80"/>
         <Label 
             Text="How To Play"
             VerticalOptions="Start" 
@@ -43,7 +43,6 @@
             FontSize="Body"
             FontFamily="DroidSerifRegular"
             Margin="15, 2, 0, 0" />
-
         <Label
             Text="Example"
             VerticalOptions="Start" 
@@ -53,8 +52,7 @@
             FontFamily="DroidSerifRegular"
             FontAttributes="Bold"
             Margin="15, 20, 0, 0" />
-        
-         <Image 
+        <Image 
              Source="wordle_example.png" 
              HorizontalOptions="Start" 
              WidthRequest="200" 
@@ -80,6 +78,7 @@
                 FontFamily="DroidSerifRegular"
                 Margin="0, 0, 0, 5"/>
         </HorizontalStackLayout>
+        
         <HorizontalStackLayout>
             <Label
                 Text="I"
@@ -119,7 +118,5 @@
                 FontFamily="DroidSerifRegular"
                 Margin="0, 0, 0, 5"/>
         </HorizontalStackLayout>
-
-
     </VerticalStackLayout>
 </mct:Popup>

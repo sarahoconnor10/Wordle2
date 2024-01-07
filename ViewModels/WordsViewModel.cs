@@ -5,9 +5,9 @@ namespace Wordle.ViewModels
 {
     public class WordsViewModel : INotifyPropertyChanged
     {
+        //variables / objects
         public event PropertyChangedEventHandler PropertyChanged;
         private string FilePath => System.IO.Path.Combine(FileSystem.Current.AppDataDirectory, "words.txt");
-
         private HttpClient httpClient;
         private List<string> ListofWords;
         public List<string> Words => ListofWords;
@@ -15,6 +15,7 @@ namespace Wordle.ViewModels
 
         public WordsViewModel()
         {
+            //constructor initialise httpClient & list for words, checks if file exists.
             httpClient = new HttpClient();
             ListofWords = new List<string>();
 
@@ -26,6 +27,7 @@ namespace Wordle.ViewModels
 
         private async Task ReadFromFile()
         {
+            //reads file in to list.
             try
             {
                 ListofWords = File.ReadAllLines(FilePath).ToList();
@@ -38,6 +40,7 @@ namespace Wordle.ViewModels
 
         private async Task GetWords()
         {
+            //clears any existing list, retrieves data from URL, splits words into array, assigns array to list, saves the words to a file.
             ListofWords.Clear();
             var response = await httpClient.GetAsync("https://raw.githubusercontent.com/DonH-ITS/jsonfiles/main/words.txt");
             string content = await response.Content.ReadAsStringAsync();
@@ -51,6 +54,7 @@ namespace Wordle.ViewModels
 
         private async Task SaveWordsFile(string data)
         {
+            //saves words to a file.
             try
             {
                 File.WriteAllText(FilePath, data);
@@ -64,6 +68,7 @@ namespace Wordle.ViewModels
 
         public async Task MakeList()
         {
+            //if not busy, begins making list from file.
             if (IsBusy)
                 return;
             try
@@ -87,11 +92,13 @@ namespace Wordle.ViewModels
 
         public async Task GetWordsFromVM()
         {
+            //function to be used in main page
             await MakeList();
         }//GetWordsFromVM
 
         public bool IsBusy
         {
+            //assigns / gets IsBusy
             get => isBusy;
             set
             {
@@ -109,36 +116,6 @@ namespace Wordle.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }//OnPropertyChanged()
-
-
-        private bool _isHardMode;
-        public bool IsHardMode
-        {
-            get { return _isHardMode; }
-            set
-            {
-                if (_isHardMode != value)
-                {
-                    _isHardMode = value;
-                    OnPropertyChanged(nameof(IsHardMode));
-                }
-            }//set
-        }//isHardMode
-
-        private bool _isDarkMode;
-        public bool IsDarkMode
-        {
-            get { return _isDarkMode; }
-            set
-            {
-                if (_isDarkMode != value)
-                {
-                    _isDarkMode = value;
-                    OnPropertyChanged(nameof(IsDarkMode));
-                }
-            }//set
-        }//isDarkMode
-
     }//class
 }//namespace
 

@@ -1,22 +1,19 @@
 ﻿
+/*
+    Internet and Mobile App Development
+    Wordle Project
+    Sarah O'Connor
+    G00423847
+ */
 using CommunityToolkit.Maui.Views;
 using System.Diagnostics;
 using Wordle.ViewModels;
-using System;
-using System.IO;
 
 namespace Wordle;
-
-/*
- * 04/01/24 current tasks:
- *  add in references
- *  dynamic sizing depending on device
- */
 
 public partial class MainPage : ContentPage
 {
     //variables - pages / viewmodels
-    //private AppSettings _settingsViewModel;
     private WordsViewModel _wordsViewModel = new WordsViewModel();
 
     //lists
@@ -30,21 +27,23 @@ public partial class MainPage : ContentPage
     private List<char> wrongLettersGuessed = new List<char>();
     
     private Random random = new Random();
-    private HttpClient httpClient = new HttpClient();
-
-    public string SaveFilePath => System.IO.Path.Combine(FileSystem.Current.AppDataDirectory, "savefile.txt");
+    private string SaveFilePath => System.IO.Path.Combine(FileSystem.Current.AppDataDirectory, "savefile.txt");
     private string guess;
     private int letterCounter = 0, guessCounter = 0;
     private int numWins, gamesPlayed, percentWon, streak;
-    public bool gameRunning = false;
-    bool isHardMode;
-    bool validInput;
-    bool gridDrawn = false;
-    bool won = false;
+    private bool gameRunning = false;
+    private bool isHardMode;
+    private bool validInput;
+    private bool gridDrawn = false;
+    private bool won = false;
     private string chosenWord { get; set; }
 
     public MainPage()
     {
+        /*
+            Constructor populates list of keyboard keys, determines whether app is dark mode and 
+            assigns images accordingly, determines if hard mode is enabled and starts the game.
+         */
         InitializeComponent();
         BindingContext = _wordsViewModel;
        
@@ -76,6 +75,21 @@ public partial class MainPage : ContentPage
 
     public void PlayGame()
     {
+        /*
+            determines whether app is dark mode and assigns images accordingly, assigns details
+            from file, restarts game to clear grid and reset variables, and gets a word.
+         */
+        if ((bool)Application.Current.Resources["IsDarkMode"])
+        {
+            stats_image.Source = "stats_dark.png";
+            how_image.Source = "how_dark.png";
+        }
+        else
+        {
+            stats_image.Source = "stats.png";
+            how_image.Source = "how.png";
+        }
+
         GetDetails();
         RestartGame();
         GetWord();
@@ -83,11 +97,15 @@ public partial class MainPage : ContentPage
 
     private void playAgain_btn_Clicked(object sender, EventArgs e)
     {
+        //plays game when clicked
         PlayGame();
     }//playAgain_btn_Clicked()
 
     private void DrawGrid()
     {
+        /*
+            Draws actual grid on first iteration, then only adds the frame for every iteration after.
+        */
         if (!gridDrawn)
         {
             for (int i = 0; i < 6; i++)
@@ -119,13 +137,19 @@ public partial class MainPage : ContentPage
 
     private async void GetWord()
     {
+        /*
+            Retrieves list of words from view model, calls method to pick a word (can uncomment debug to see picked word - for testing purposes).
+        */
         words = _wordsViewModel.Words;
         chosenWord = PickWord();
-        Debug.WriteLine(chosenWord);
+        //Debug.WriteLine(chosenWord);
     }//GetWord()
 
     public string PickWord()
     {
+        /*
+            Picks a word from the list based on a random number & returns it.
+        */
         if (words.Count > 0)
         {
             int randomNumber = random.Next(0, words.Count);
@@ -139,6 +163,9 @@ public partial class MainPage : ContentPage
 
     private async void Button_Clicked(object sender, EventArgs e)
     {
+        /*
+            Determines which button has been clicked, adds a label to the grid with the corresponding value.               
+        */
         if (guessCounter < 6 && letterCounter < 5)
         {
             if (sender is Button button)
@@ -174,7 +201,10 @@ public partial class MainPage : ContentPage
 
     private void Backspace_Clicked(object sender, EventArgs e)
     {
-        if(letterCounter > 0)
+        /*
+            Removes last label added to grid.
+        */
+        if (letterCounter > 0)
         {
            var lastLabel = addedLabels[addedLabels.Count - 1];
             GuessGrid.Children.Remove(lastLabel);
@@ -194,7 +224,11 @@ public partial class MainPage : ContentPage
 
     private void Enter_Clicked(object sender, EventArgs e)
     {
-            if (guessCounter < 6)
+        /*
+            Gets text from each label in the row to form the guessed word,
+            checks if input is in word list, if valid - calls CheckWord()
+        */
+        if (guessCounter < 6)
             {
                 guess = "";
                 int rowIndex = guessCounter;
@@ -229,7 +263,7 @@ public partial class MainPage : ContentPage
                         checkWord();
                         guessCounter++;
                         letterCounter = 0;
-                        Debug.WriteLine(guess);
+                        //Debug.WriteLine(guess); //testing
                     }
                 }//else
             }//if less than 6 guesses
@@ -237,14 +271,17 @@ public partial class MainPage : ContentPage
 
     private async void checkWord()
     {
+        /*
+            Compares each letter in guess to each letter in chosen word, 
+            changes frame colour to green, yellow or grey. Calls Win() if game is won,
+            or Lose() if you run out of guesses.
+        */
         enter_btn.IsEnabled = false;
         int row = guessCounter;
 
         List<char> chosenLetters = chosenWord.ToList();
         List<int> greenLetters = new List<int>();
         List<int> yellowLetters = new List<int>();
-
-
         
         for (int col = 0; col < 5; col++)
         {
@@ -328,6 +365,9 @@ public partial class MainPage : ContentPage
 
     private void ValidWord()
     {
+        /*
+            Compares guess to word list to check validity.
+        */
         for (int i = 0; i < words.Count; i++)
         {
             if (guess.Equals(words[i]))
@@ -342,6 +382,9 @@ public partial class MainPage : ContentPage
 
     private async void Win()
     {
+        /*
+            Informs player that they won, increments appropriate variables, calls to save details to file, then shows Stats pop up page.
+        */
         gamesPlayed++;
         playAgain_btn.IsVisible = true;
         numWins++;
@@ -357,6 +400,9 @@ public partial class MainPage : ContentPage
     }//Win()
     private async void Lose()
     {
+        /*
+            Displays correct word to player, saves details, shows Stats pop up page.
+        */
         gamesPlayed++;
         playAgain_btn.IsVisible = true;
         streak = 0;
@@ -371,6 +417,9 @@ public partial class MainPage : ContentPage
 
     private async Task SaveDetails()
     {
+        /*
+            Writes player details to a file
+        */
         try
         {
             //write details to a file
@@ -392,6 +441,9 @@ public partial class MainPage : ContentPage
 
     public async Task GetDetails()
     {
+        /*
+            Retrieves player details from a file.
+        */
         if (File.Exists(SaveFilePath))
         {
             try
@@ -428,6 +480,9 @@ public partial class MainPage : ContentPage
 
     public void RestartGame()
     {
+        /*
+            Preps the page to play again, checks if game is in hard mode
+        */
         //clear grid
         ClearGrid();
 
@@ -444,6 +499,9 @@ public partial class MainPage : ContentPage
     }//RestartGame()
     private void ClearGrid()
     {
+        /*
+            Removes existing labels and frames from the grid, also resets variables.
+        */
         foreach (var label in addedLabels)
         {
             GuessGrid.Children.Remove(label);
@@ -469,11 +527,17 @@ public partial class MainPage : ContentPage
 
     private async void DisplayAnswer(string answer)
     {
+        /*
+            Displays correct word
+        */
         await DisplayAlert("Answer", $"The correct word was: {answer}", "OK");
     }//DisplayAnswer()
 
     private async void GoToSettings(object sender, EventArgs e)
     {
+        /*
+            Shows Settings pop up page.
+        */
         if (!gameRunning)
         {
             SettingsPopUp settingsPage = new SettingsPopUp();
@@ -482,18 +546,27 @@ public partial class MainPage : ContentPage
     }//GoToSettings()
     private async void GoToStats(object sender, EventArgs e)
     {
+        /*
+            Shows Stats pop up page.
+        */
         StatsPopUp statsPage = new StatsPopUp();
         statsPage.UpdateStatistics();
         await this.ShowPopupAsync(statsPage);
     }//GoToStats()
     private async void GoToHow(object sender, EventArgs e)
     {
+        /*
+            Shows HowToPlay pop up page.
+        */
         HowToPlay howToPlayPage = new HowToPlay();
         await this.ShowPopupAsync(howToPlayPage);
     }//GoToSettings()
 
     private void DisableKeyboard()
     {
+        /*
+            Disables all keys in keyboard.
+        */
         foreach (var button in keys)
         {
             button.IsEnabled = false;
@@ -502,7 +575,10 @@ public partial class MainPage : ContentPage
 
     private void EnableKeyboard()
     {
-        foreach(var button in keys)
+        /*
+            Enables all keys in keyboard.
+        */
+        foreach (var button in keys)
         {
             button.IsEnabled = true;
         }//for each key
@@ -510,6 +586,9 @@ public partial class MainPage : ContentPage
 
     private void ChangeKeyGreen(char key)
     {
+        /*
+            Turns corresponding key green.
+        */
         char lowerKey = char.ToLower(key);
 
         foreach (var button in keys)
@@ -524,6 +603,9 @@ public partial class MainPage : ContentPage
 
     private void ChangeKeyYellow(char key)
     {
+        /*
+            Turns corresponding key yellow.
+        */
         char lowerKey = char.ToLower(key);
 
         foreach (var button in keys)
@@ -537,6 +619,9 @@ public partial class MainPage : ContentPage
     }//ChangeKeyYellow()
     private void ChangeKeyGrey(char key)
     {
+        /*
+            Turns corresponding key grey, if game is in hard mode, those keys are also disabled.
+        */
         char lowerKey = char.ToLower(key);
 
         foreach (var button in keys)
@@ -563,6 +648,9 @@ public partial class MainPage : ContentPage
 
     private void ResetKeyColor() 
     {
+        /*
+            Resets all keys back to original colour.
+        */
         foreach (var button in keys) 
         {
             button.BackgroundColor = Color.FromHex("#d6d4d4");

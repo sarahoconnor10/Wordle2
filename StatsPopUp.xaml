@@ -14,30 +14,27 @@
             FontSize="Small"
             FontFamily="DroidSerifRegular"
             Margin="0, 30, 0, 0"
-            FontAttributes="Bold"
-            />
+            FontAttributes="Bold"/>
+        
         <HorizontalStackLayout HorizontalOptions="Center">
             <Label
                 Text="{Binding NumWins}"
                 FontSize="Header"
                 FontFamily="DroidSerifRegular"
                 TextColor="Black" 
-                Margin="10, 10, 10, 0"
-                />
+                Margin="10, 10, 10, 0"/>
             <Label
                 Text="{Binding PercentWon}"
                 FontSize="Header"
                 FontFamily="DroidSerifRegular"
                 TextColor="Black" 
-                Margin="10, 10, 10, 0"
-                />
+                Margin="10, 10, 10, 0"/>
             <Label
                 Text="{Binding Streak}"
                 FontSize="Header"
                 FontFamily="DroidSerifRegular"
                 TextColor="Black" 
-                Margin="10, 10, 10, 0"
-                />
+                Margin="10, 10, 10, 0"/>
         </HorizontalStackLayout>
 
         <HorizontalStackLayout HorizontalOptions="Center">
@@ -46,24 +43,19 @@
                 FontSize="Micro"
                 FontFamily="DroidSerifRegular"
                 TextColor="Black" 
-                Margin="10, 0, 10, 20"
- 
-                />
+                Margin="10, 0, 10, 20"/>
             <Label
                 Text="Win %"
                 FontSize="Micro"
                 FontFamily="DroidSerifRegular"
                 TextColor="Black" 
-                Margin="10, 0, 10, 20"
-                />
+                Margin="10, 0, 10, 20"/>
             <Label
                 Text="Streak"
                 FontSize="Micro"
                 FontFamily="DroidSerifRegular"
                 TextColor="Black" 
-                Margin="10, 0, 10, 20"
-                />
-
+                Margin="10, 0, 10, 20"/>
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </mct:Popup>

@@ -1,28 +1,28 @@
 using CommunityToolkit.Maui.Views;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
 using System.Runtime.CompilerServices;
 
 namespace Wordle;
 
 public partial class StatsPopUp : Popup, INotifyPropertyChanged
 {
+    //variables
     private int _percentWon;
     private int _numWins;
     private int _streak;
     private int _gamesPlayed;
     public string SaveFilePath => System.IO.Path.Combine(FileSystem.Current.AppDataDirectory, "savefile.txt");
 
-
     public StatsPopUp()
 	{
+        //assigns binding context, updates stats.
 		InitializeComponent();
         BindingContext = this;
         UpdateStatistics();
     }//constructor
     public void UpdateStatistics()
     {
+        //gets details from file
         GetDetails();
     }//UpdateStatistics()
     public int PercentWon
@@ -35,10 +35,9 @@ public partial class StatsPopUp : Popup, INotifyPropertyChanged
             {
                 _percentWon = value;
                 OnPropertyChanged(nameof(PercentWon));
-            }//if not equal to value
-        }//set
+            }
+        }
     }//PercentWon
-
     public int NumWins
     {
         get => _numWins;
@@ -51,7 +50,6 @@ public partial class StatsPopUp : Popup, INotifyPropertyChanged
             }
         }
     }//NumWins
-
     public int Streak
     {
         get => _streak;
@@ -76,7 +74,6 @@ public partial class StatsPopUp : Popup, INotifyPropertyChanged
             }
         }
     }//GamesPlayed
-
     public async Task GetDetails()
     {
         if (File.Exists(SaveFilePath))
@@ -113,7 +110,6 @@ public partial class StatsPopUp : Popup, INotifyPropertyChanged
             GamesPlayed = 0;
         }//else no file
     }//GetDetails()
-
 
     public event PropertyChangedEventHandler PropertyChanged;
 
