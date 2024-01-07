@@ -10,7 +10,6 @@ namespace Wordle;
 /*
  * 04/01/24 current tasks:
  *  add in references
- *  add github link (explain issues with previous repositories?)
  *  dynamic sizing depending on device
  */
 
@@ -58,6 +57,18 @@ public partial class MainPage : ContentPage
             k_key, l_key, m_key, n_key, o_key, p_key, q_key, r_key, s_key, t_key,
             u_key, v_key, w_key, x_key, y_key, z_key, back_btn
         };
+
+        if ((bool)Application.Current.Resources["IsDarkMode"])
+        {
+            stats_image.Source = "stats_dark.png";
+            how_image.Source = "how_dark.png";
+        }
+        else
+        {
+            stats_image.Source = "stats.png";
+            how_image.Source = "how.png";
+        }
+
         isHardMode = (bool)Application.Current.Resources["IsHardMode"];
         PlayGame();
 
@@ -475,6 +486,11 @@ public partial class MainPage : ContentPage
         statsPage.UpdateStatistics();
         await this.ShowPopupAsync(statsPage);
     }//GoToStats()
+    private async void GoToHow(object sender, EventArgs e)
+    {
+        HowToPlay howToPlayPage = new HowToPlay();
+        await this.ShowPopupAsync(howToPlayPage);
+    }//GoToSettings()
 
     private void DisableKeyboard()
     {
